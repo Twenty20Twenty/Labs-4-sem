@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane fx:id="pane" alignment="CENTER" focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.ButtonController">
+  <children>
+    <Pane fx:id="modalPane" focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #e1c6c6;">
+      <children>
+        <Label fx:id="statistic" alignment="CENTER" layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="600.0" textAlignment="CENTER" textFill="#000000" wrapText="true">
+          <font>
+            <Font name="JetBrains Mono SemiBold" size="26.0" />
+          </font>
+        </Label>
+        <Label fx:id="labelTextTIMER" layoutX="10" layoutY="10" text="Timer:" underline="true">
+          <font>
+            <Font name="System Bold" size="22.0" />
+          </font>
+        </Label>
+        <Label fx:id="labelTimer" layoutX="87.0" layoutY="13.0" text="00:00" textFill="#0b09ab">
+          <font>
+            <Font name="Arial Bold Italic" size="22.0" />
+          </font>
+        </Label>
+      </children>
+    </Pane>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints />
+  </rowConstraints>
+</GridPane>
