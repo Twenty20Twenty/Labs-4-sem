@@ -1,17 +1,16 @@
 package ru.nstu.javafx_labs_lipatov;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Application extends javafx.application.Application {
     Habitat school;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
         Parent root = fxmlLoader.load();
         school = new Habitat(fxmlLoader.getController());
         Habitat.setInstance(school);
@@ -19,9 +18,10 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(root, Habitat.getWidth(), Habitat.getHeight());
         scene.getRoot().requestFocus();
         stage.setMaximized(false);
-        school.setMaleStudent(5, 0.56F);
-        school.setFemaleStudent(2, 0.14F);
-        stage.setTitle("Липатов, Драйко");
+        stage.setResizable(false);
+        school.setMaleStudent(1, 0.1F);
+        school.setFemaleStudent(1, 0.14F);
+        stage.setTitle("Студенты и Студентки");
         stage.setScene(scene);
         stage.show();
     }

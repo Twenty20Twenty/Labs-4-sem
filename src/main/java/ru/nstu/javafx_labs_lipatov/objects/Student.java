@@ -1,4 +1,4 @@
-package ru.nstu.javafx_labs_lipatov;
+package ru.nstu.javafx_labs_lipatov.objects;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,14 +15,13 @@ public abstract class Student {
     public void setPath(String path) {
         this.path = path;
     }
-
     public ImageView getImageView(){
         return imageView;
     }
 
     public Student(int _x, int _y, String path) throws FileNotFoundException {
-        Image image = new Image(new FileInputStream(path));
-        imageView = new ImageView(image);
+        this.path = path;
+        imageView = new ImageView();
         imageView.setX(_x);
         imageView.setY(_y);
         imageView.setFitHeight(100);

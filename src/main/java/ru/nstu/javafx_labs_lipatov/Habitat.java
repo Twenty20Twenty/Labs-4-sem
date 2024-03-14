@@ -1,6 +1,9 @@
 package ru.nstu.javafx_labs_lipatov;
 
 import javafx.application.Platform;
+import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
+import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
+import ru.nstu.javafx_labs_lipatov.objects.Student;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,12 +16,13 @@ public class Habitat {
     private static int width = 600;
     private static int height = 600;
     private ArrayList<Student> array = new ArrayList<Student>();
-    private ButtonController controller;
+    private Controller controller;
     private float p1;
     private float p2;
     private int n1;
     private int n2;
-    public boolean startFlag;
+    private boolean startFlag;
+    private boolean informationFlag = true;
     public boolean timeFlag = true;
     private boolean statisticFlag;
     private int seconds;
@@ -35,8 +39,24 @@ public class Habitat {
     public static void setInstance(Habitat instance) {
         Habitat.instance = instance;
     }
-    public Habitat(ButtonController controller){
+    public Habitat(Controller controller){
         this.controller = controller;
+    }
+
+    public boolean isStartFlag() {
+        return startFlag;
+    }
+
+    public boolean isInformationFlag() {
+        return informationFlag;
+    }
+
+    public void setInformationFlag(boolean informationFlag) {
+        this.informationFlag = informationFlag;
+    }
+
+    public void setStatisticFlag(boolean statisticFlag) {
+        this.statisticFlag = statisticFlag;
     }
 
     public void setMaleStudent(int n, float p){
@@ -70,12 +90,15 @@ public class Habitat {
             clearList();
         }
     }
-
+    private int iter = 0;
     private void startWork(){
         timer.schedule(new TimerTask() {
             @Override
             public void run(){
-                seconds++;
+                iter++;
+                if (iter % 20 == 0){
+                    seconds++;
+                }
                 if (seconds == 60){
                     minutes++;
                     seconds = 0;
@@ -83,11 +106,13 @@ public class Habitat {
 
                 Platform.runLater(() -> {
                     updateTimer();
-                    update(System.currentTimeMillis() - startTime);
+                    if (iter % 20 == 0){
+                        update(System.currentTimeMillis() - startTime);
+                    }
                 });
 
             }
-        }, 0, 1000);
+        }, 0, 50);
     }
 
     public void update(long time){
@@ -101,13 +126,13 @@ public class Habitat {
         float p = random.nextFloat();
         try {
             if ((time % n1 == 0) && (p1 <= p)){
-                MaleStudent student = new MaleStudent(random.nextInt(50, width - 50), random.nextInt(25, height - 100));
-                controller.getPane().getChildren().add(student.getImageView());
+                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
+                controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }
             if ((time % n2 == 0) && (p2 <= p)){
-                FemaleStudent student = new FemaleStudent(random.nextInt(50, width - 50), random.nextInt(25, height - 100));
-                controller.getPane().getChildren().add(student.getImageView());
+                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
+                controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }
         }
@@ -117,21 +142,23 @@ public class Habitat {
     }
 
     private void clearList(){
-        array.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
+        array.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
         array.clear();
     }
 
     public void showStatisticLabel(){
-        if (statisticFlag) {
-            String statistic = "Создано студентов: " + MaleStudent.countMaleStudent +
-                    "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-            statistic += "\nВремя работы: " + (System.currentTimeMillis() - startTime)/1000 + "(сек)";
-            controller.getStatisticLabel().setText(statistic);
-            controller.getStatisticLabel().setVisible((true));
-        }
-        else{
-            controller.getStatisticLabel().setVisible((false));
-            controller.getStatisticLabel().setText("");
+        if (informationFlag) {
+            if (statisticFlag) {
+                String statistic = "Создано студентов: " + MaleStudent.countMaleStudent +
+                        "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
+                statistic += "\nВремя работы: " + (System.currentTimeMillis() - startTime)/1000 + "(сек)";
+                controller.getStatisticLabel().setText(statistic);
+                controller.getStatisticLabel().setVisible((true));
+            }
+            else{
+                controller.getStatisticLabel().setVisible((false));
+                controller.getStatisticLabel().setText("");
+            }
         }
     }
   
@@ -154,10 +181,12 @@ public class Habitat {
         if (timeFlag) {
             controller.getLabelTextTIMER().setVisible(true);
             controller.getLabelTimer().setVisible(true);
+            controller.getRadioButtonShowTimer().setSelected(true);
         }
         else {
             controller.getLabelTextTIMER().setVisible(false);
             controller.getLabelTimer().setVisible(false);
+            controller.getRadioButtonHideTimer().setSelected(true);
         }
     }
 

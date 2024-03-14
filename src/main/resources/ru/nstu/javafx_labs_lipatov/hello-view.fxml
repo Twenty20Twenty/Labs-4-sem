@@ -4,32 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane fx:id="pane" alignment="CENTER" focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.ButtonController">
-  <children>
-    <Pane fx:id="modalPane" focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #e1c6c6;">
+<SplitPane fx:id="splitPane" dividerPositions="0.28762541806020064" maxHeight="600" maxWidth="600" minHeight="600" minWidth="600" onKeyPressed="#keyPressed" orientation="VERTICAL"  prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.Controller">
+  <items>
+    <Pane fx:id="managmentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #5d91fc;"/>
+    <Pane fx:id="visualizationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #e1c6c6;">
       <children>
-        <Label fx:id="statistic" alignment="CENTER" layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="600.0" textAlignment="CENTER" textFill="#000000" wrapText="true">
+        <Label fx:id="labelTextTIMER" layoutX="14.0" layoutY="14.0" text="Timer:" />
+        <Label fx:id="labelTimer" layoutX="54.0" layoutY="14.0"/>
+        <Label fx:id="statistic" layoutX="300" layoutY="200">
           <font>
-            <Font name="JetBrains Mono SemiBold" size="26.0" />
-          </font>
-        </Label>
-        <Label fx:id="labelTextTIMER" layoutX="10" layoutY="10" text="Timer:" underline="true">
-          <font>
-            <Font name="System Bold" size="22.0" />
-          </font>
-        </Label>
-        <Label fx:id="labelTimer" layoutX="87.0" layoutY="13.0" text="00:00" textFill="#0b09ab">
-          <font>
-            <Font name="Arial Bold Italic" size="22.0" />
+            <Font name="JetBrains Mono SemiBold" size="20" />
           </font>
         </Label>
       </children>
     </Pane>
-  </children>
-  <columnConstraints>
-    <ColumnConstraints />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints />
-  </rowConstraints>
-</GridPane>
+  </items>
+</SplitPane>
