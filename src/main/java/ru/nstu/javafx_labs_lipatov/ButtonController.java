@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class ButtonController {
+    // бом бом
     @FXML
     private GridPane pane;
     @FXML
