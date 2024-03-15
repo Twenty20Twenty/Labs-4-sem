@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.Controller">
+   <items>
+      <Pane fx:id="managmentPane" prefHeight="200.0" prefWidth="598.0" style="-fx-background-color: #808080;">
+         <children>
+            <Button fx:id="buttonStart" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Button>
+            <RadioButton fx:id="informationSwitch" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Показывать информацию">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></RadioButton>
+            <RadioButton fx:id="radioButtonShowTimer" layoutX="85.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" selected="true" text="Показывать время симуляции">
+               <toggleGroup>
+                  <ToggleGroup fx:id="tgTimer" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioButtonHideTimer" layoutX="85.0" layoutY="123.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Скрывать время симуляции" toggleGroup="$tgTimer" />
+            <MenuBar prefHeight="25.0" prefWidth="600.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="Главное">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#menuStart" text="Начать генерацию" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuStop" text="Остановить генерацию" />
+                        <MenuItem mnemonicParsing="false" text="Закрыть программу" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Панель инструментов">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#menuShowTimer" text="Показывать время симуляции" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuHideTimer" text="Скрывать время симуляции" />
+                        <MenuItem mnemonicParsing="false" text="3" />
+                        <MenuItem mnemonicParsing="false" text="4" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" onAction="#menuShowTimer" text="Инфо">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Авторы" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <Pane layoutX="300.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="290.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТА">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="applyMalePropertiesButton" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#maleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="maleSpawnTime" alignment="CENTER" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="maleSpawnProbability" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="0 %" />
+                              <String fx:value="10 %" />
+                              <String fx:value="20 %" />
+                              <String fx:value="30 %" />
+                              <String fx:value="40 %" />
+                              <String fx:value="50 %" />
+                              <String fx:value="60 %" />
+                              <String fx:value="70 %" />
+                              <String fx:value="80 %" />
+                              <String fx:value="90 %" />
+                              <String fx:value="100 %" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+               </children>
+            </Pane>
+            <Button fx:id="buttonStop" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Pane layoutX="300.0" layoutY="107.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="290.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТКИ">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="applyFemalePropertiesButton" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#femaleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="femaleSpawnTime" alignment="CENTER" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="femaleSpawnProbability" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="0 %" />
+                              <String fx:value="10 %" />
+                              <String fx:value="20 %" />
+                              <String fx:value="30 %" />
+                              <String fx:value="40 %" />
+                              <String fx:value="50 %" />
+                              <String fx:value="60 %" />
+                              <String fx:value="70 %" />
+                              <String fx:value="80 %" />
+                              <String fx:value="90 %" />
+                              <String fx:value="100 %" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="visualizationPane" prefHeight="400.0" prefWidth="598.0" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
+         <children>
+            <Label fx:id="labelTextTIMER" layoutX="14.0" layoutY="14.0" text="Timer:" />
+            <Label fx:id="labelTimer" layoutX="54.0" layoutY="14.0" />
+            <Label fx:id="statistic" alignment="CENTER" layoutX="178.0" layoutY="103.0" prefHeight="151.0" prefWidth="242.0" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </items>
+</SplitPane>

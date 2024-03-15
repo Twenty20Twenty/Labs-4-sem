@@ -22,7 +22,7 @@ public class Habitat {
     private int n1;
     private int n2;
     private boolean startFlag;
-    private boolean informationFlag = true;
+    private boolean informationWindowFlag = false;
     public boolean timeFlag = true;
     private boolean statisticFlag;
     private int seconds;
@@ -33,13 +33,16 @@ public class Habitat {
     public static int getWidth() {
         return width;
     }
+
     public static int getHeight() {
         return height;
     }
+
     public static void setInstance(Habitat instance) {
         Habitat.instance = instance;
     }
-    public Habitat(Controller controller){
+
+    public Habitat(Controller controller) {
         this.controller = controller;
     }
 
@@ -47,28 +50,39 @@ public class Habitat {
         return startFlag;
     }
 
-    public boolean isInformationFlag() {
-        return informationFlag;
+    public boolean isInformationWindowFlag() {
+        return informationWindowFlag;
     }
 
-    public void setInformationFlag(boolean informationFlag) {
-        this.informationFlag = informationFlag;
+    public void setInformationWindowFlag(boolean informationFlag) {
+        this.informationWindowFlag = informationFlag;
     }
 
     public void setStatisticFlag(boolean statisticFlag) {
         this.statisticFlag = statisticFlag;
     }
 
-    public void setMaleStudent(int n, float p){
-        n1 = n;
+    public void setMaleStudentP(float p) {
         p1 = p;
     }
-    public void setFemaleStudent(int n, float p){
-        n2 = n;
+
+    public void setMaleStudentN(int n) {
+        n1 = n;
+    }
+
+    public void setFemaleStudentP(float p) {
         p2 = p;
     }
 
-    public void startGeneration(){
+    public void setFemaleStudentN(int n) {
+        n2 = n;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void startGeneration() {
         MaleStudent.countMaleStudent = 0;
         FemaleStudent.countFemaleStudent = 0;
         startFlag = true;
@@ -77,36 +91,42 @@ public class Habitat {
         minutes = 0;
         timer = new Timer();
         startTime = System.currentTimeMillis();
-        showStatisticLabel();
+        //showStatisticLabel();
         startWork();
     }
 
-    public void stopGeneration(){
+    public void pauseGeneration(){
+
+    }
+
+    public void stopGeneration() {
         startFlag = false;
         statisticFlag = true;
-        showStatisticLabel();
-        if(!startFlag){
+        //showStatisticLabel();
+        if (!startFlag) {
             timer.cancel();
             clearList();
         }
     }
+
     private int iter = 0;
-    private void startWork(){
+
+    private void startWork() {
         timer.schedule(new TimerTask() {
             @Override
-            public void run(){
+            public void run() {
                 iter++;
-                if (iter % 20 == 0){
+                if (iter % 20 == 0) {
                     seconds++;
                 }
-                if (seconds == 60){
+                if (seconds == 60) {
                     minutes++;
                     seconds = 0;
                 }
 
                 Platform.runLater(() -> {
                     updateTimer();
-                    if (iter % 20 == 0){
+                    if (iter % 20 == 0) {
                         update(System.currentTimeMillis() - startTime);
                     }
                 });
@@ -115,53 +135,43 @@ public class Habitat {
         }, 0, 50);
     }
 
-    public void update(long time){
-        if (startFlag){
-            create(time/1000);
+    public void update(long time) {
+        if (startFlag) {
+            create(time / 1000);
         }
     }
 
-    private void create(long time){
+    private void create(long time) {
         Random random = new Random();
         float p = random.nextFloat();
         try {
-            if ((time % n1 == 0) && (p1 <= p)){
+            if ((time % n1 == 0) && (p1 <= p)) {
                 MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
                 controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }
-            if ((time % n2 == 0) && (p2 <= p)){
+            if ((time % n2 == 0) && (p2 <= p)) {
                 FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
                 controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }
-        }
-        catch(FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void clearList(){
+    public void clearList() {
         array.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
         array.clear();
     }
 
-    public void showStatisticLabel(){
-        if (informationFlag) {
-            if (statisticFlag) {
-                String statistic = "Создано студентов: " + MaleStudent.countMaleStudent +
-                        "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-                statistic += "\nВремя работы: " + (System.currentTimeMillis() - startTime)/1000 + "(сек)";
-                controller.getStatisticLabel().setText(statistic);
-                controller.getStatisticLabel().setVisible((true));
-            }
-            else{
-                controller.getStatisticLabel().setVisible((false));
-                controller.getStatisticLabel().setText("");
-            }
-        }
+    public String getStatistic() {
+        String statistic = "Создано студентов: " + MaleStudent.countMaleStudent +
+                "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
+        statistic += "\nВремя работы: " + (System.currentTimeMillis() - startTime) / 1000 + "(сек)";
+        return statistic;
     }
-  
+
     public void updateTimer() {
         String min = minutes + "";
         String sec = seconds + "";
@@ -176,14 +186,14 @@ public class Habitat {
             controller.getLabelTextTIMER().setVisible(true);
         }
     }
-    public void showTimer(){
+
+    public void showTimer() {
         timeFlag = !timeFlag;
         if (timeFlag) {
             controller.getLabelTextTIMER().setVisible(true);
             controller.getLabelTimer().setVisible(true);
             controller.getRadioButtonShowTimer().setSelected(true);
-        }
-        else {
+        } else {
             controller.getLabelTextTIMER().setVisible(false);
             controller.getLabelTimer().setVisible(false);
             controller.getRadioButtonHideTimer().setSelected(true);
