@@ -137,7 +137,6 @@ public class Controller {
     @FXML
     void maleProperties(ActionEvent event) {
         String userChoiseP = (String) maleSpawnProbability.getSelectionModel().getSelectedItem();
-        System.out.println(userChoiseP);
         if (userChoiseP == null)
             userChoiseP = "null";
         switch (userChoiseP) {
@@ -176,6 +175,7 @@ public class Controller {
                 break;
             case "null":
                 Habitat.getInstance().setMaleStudentP(0f);
+                maleSpawnProbability.getSelectionModel().selectLast();
                 break;
         }
         String userChoiseN = maleSpawnTime.getText();
