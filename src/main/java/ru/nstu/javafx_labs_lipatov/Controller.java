@@ -2,17 +2,19 @@ package ru.nstu.javafx_labs_lipatov;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static java.lang.Math.abs;
 
 public class Controller {
     @FXML
     private Pane visualizationPane;
-    @FXML
-    private Label statistic;
     @FXML
     private Label labelTextTIMER;
     @FXML
@@ -24,13 +26,23 @@ public class Controller {
     @FXML
     private RadioButton radioButtonHideTimer;
     @FXML
-    private TextField maleSpawnTime;
+    private Button buttonStart;
     @FXML
-    private TextField femaleSpawnTime;
+    private Button buttonStop;
+    @FXML
+    private TextField maleSpawnTimeTextField;
+    @FXML
+    private TextField femaleSpawnTimeTextField;
     @FXML
     private ComboBox maleSpawnProbability;
     @FXML
     private ComboBox femaleSpawnProbability;
+    @FXML
+    private Button applyMaleProp;
+    @FXML
+    private Button applyFemaleProp;
+    @FXML
+    private CheckBox informationCheckBox;
 
     public Pane getVisualPane() {
         return visualizationPane;
@@ -44,9 +56,6 @@ public class Controller {
         return labelTimer;
     }
 
-    public Label getStatisticLabel() {
-        return statistic;
-    }
 
     public RadioButton getRadioButtonShowTimer() {
         return radioButtonShowTimer;
@@ -56,24 +65,31 @@ public class Controller {
         return radioButtonHideTimer;
     }
 
+    public TextField getMaleSpawnTimeTextField() {
+        return maleSpawnTimeTextField;
+    }
+
+    public TextField getFemaleSpawnTimeTextField() {
+        return femaleSpawnTimeTextField;
+    }
+
+    public ComboBox getMaleSpawnProbabilityBox() {
+        return maleSpawnProbability;
+    }
+
+    public ComboBox getFemaleSpawnProbabilityBox() {
+        return femaleSpawnProbability;
+    }
+
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException {
         Button btn = (Button) event.getSource();
         switch (btn.getText()) {
             case "Старт":
-                if (!Habitat.getInstance().isStartFlag())
-                    Habitat.getInstance().startGeneration();
+                startFunk();
                 break;
             case "Стоп":
-                if (Habitat.getInstance().isStartFlag()) {
-                    if (!Habitat.getInstance().isInformationWindowFlag()) {
-                        Habitat.getInstance().stopGeneration();
-                    } else {
-                        ModalWindow ttt = new ModalWindow();
-                        ttt.newWindow("Information Window", "Студентов: 3\nСтуденток: 7");
-
-                    }
-                }
+                stopFunk();
                 break;
         }
     }
@@ -95,33 +111,80 @@ public class Controller {
     }
 
     @FXML
+    private void handleInformationsCheckBox(ActionEvent event) {
+        if (informationCheckBox.isSelected()) {
+            Habitat.getInstance().setInformationWindowFlag(true);
+        } else {
+            Habitat.getInstance().setInformationWindowFlag(false);
+        }
+    }
+
+    @FXML
     void keyPressed(KeyEvent key) {
         key.consume();
         switch (key.getCode()) {
             case B:
-                if (!Habitat.getInstance().isStartFlag())
-                    Habitat.getInstance().startGeneration();
+                startFunk();
                 break;
             case E:
-                if (Habitat.getInstance().isStartFlag())
-                    Habitat.getInstance().stopGeneration();
+                stopFunk();
                 break;
             case T:
                 Habitat.getInstance().showTimer();
                 break;
         }
     }
+    private void startFunk(){
+        Habitat.getInstance().startGeneration();
+        buttonStart.setDisable(true);
+        buttonStop.setDisable(false);
+        applyMaleProp.setDisable(true);
+        maleSpawnTimeTextField.setDisable(true);
+        maleSpawnProbability.setDisable(true);
+        applyFemaleProp.setDisable(true);
+        femaleSpawnTimeTextField.setDisable(true);
+        femaleSpawnProbability.setDisable(true);
+    }
 
+    private void stopFunk(){
+        if (Habitat.getInstance().isStartFlag()) {
+            if (Habitat.getInstance().isInformationWindowFlag()) {
+                Habitat.getInstance().pauseGeneration();
+            } else {
+                Habitat.getInstance().stopGeneration();
+            }
+            if (!Habitat.getInstance().isStartFlag()) {
+                buttonStart.setDisable(false);
+                buttonStop.setDisable(true);
+            }
+
+        }
+        applyMaleProp.setDisable(false);
+        maleSpawnTimeTextField.setDisable(false);
+        maleSpawnProbability.setDisable(false);
+        applyFemaleProp.setDisable(false);
+        femaleSpawnTimeTextField.setDisable(false);
+        femaleSpawnProbability.setDisable(false);
+    }
     @FXML
-    void menuStart(ActionEvent event) {
-        if (!Habitat.getInstance().isStartFlag())
-            Habitat.getInstance().startGeneration();
+    private void menuStart(ActionEvent event) {
+        startFunk();
     }
 
     @FXML
-    void menuStop(ActionEvent event) {
-        if (Habitat.getInstance().isStartFlag())
-            Habitat.getInstance().stopGeneration();
+    private void menuStop(ActionEvent event) {
+        stopFunk();
+    }
+
+    @FXML
+    private void menuShowInformation(ActionEvent event) {
+        if (Habitat.getInstance().isInformationWindowFlag()) {
+            informationCheckBox.setSelected(false);
+            Habitat.getInstance().setInformationWindowFlag(false);
+        } else {
+            informationCheckBox.setSelected(true);
+            Habitat.getInstance().setInformationWindowFlag(true);
+        }
     }
 
     @FXML
@@ -132,6 +195,15 @@ public class Controller {
     @FXML
     void menuShowTimer(ActionEvent event) {
         Habitat.getInstance().showTimer();
+    }
+
+    @FXML
+    void menuExit(ActionEvent event) {
+        if (Habitat.getInstance().isStartFlag())
+            Habitat.getInstance().getTimer().cancel();
+        Habitat.getInstance().clearList();
+        Stage stage = (Stage) buttonStart.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -178,14 +250,20 @@ public class Controller {
                 maleSpawnProbability.getSelectionModel().selectLast();
                 break;
         }
-        String userChoiseN = maleSpawnTime.getText();
+        String userChoiseN = maleSpawnTimeTextField.getText();
         try {
-            Habitat.getInstance().setMaleStudentN(Integer.parseInt(userChoiseN));
-        }
-        catch (NumberFormatException e){
-            Habitat.getInstance().setMaleStudentN(5);
-            maleSpawnTime.setText("5");
-            e.printStackTrace();
+            int n = Integer.parseInt(userChoiseN);
+            if (n < 0){
+                n = abs(n);
+                Habitat.getInstance().setMaleStudentN(n);
+                maleSpawnTimeTextField.setText(String.valueOf(n));
+            }
+            Habitat.getInstance().setMaleStudentN(n);
+        } catch (NumberFormatException e) {
+            Habitat.getInstance().setMaleStudentN(2);
+            maleSpawnTimeTextField.setText("2");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод периода рождения студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            alert.showAndWait();
         }
     }
 
@@ -233,14 +311,29 @@ public class Controller {
                 femaleSpawnProbability.getSelectionModel().selectLast();
                 break;
         }
-        String userChoiseN = femaleSpawnTime.getText();
+        String userChoiseN = femaleSpawnTimeTextField.getText();
         try {
-            Habitat.getInstance().setFemaleStudentN(Integer.parseInt(userChoiseN));
+            int n = Integer.parseInt(userChoiseN);
+            if (n < 0){
+                n = abs(n);
+                Habitat.getInstance().setFemaleStudentN(n);
+                femaleSpawnTimeTextField.setText(String.valueOf(n));
+            }
+            Habitat.getInstance().setFemaleStudentN(n);
+
         } catch (NumberFormatException e) {
-            Habitat.getInstance().setFemaleStudentN(5);
-            femaleSpawnTime.setText("5");
-            e.printStackTrace();
+            Habitat.getInstance().setFemaleStudentN(3);
+            femaleSpawnTimeTextField.setText("3");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод периода рождения студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            alert.showAndWait();
         }
     }
 
+    public Button getButtonStop() {
+        return buttonStop;
+    }
+
+    public Button getButtonStart() {
+        return buttonStart;
+    }
 }

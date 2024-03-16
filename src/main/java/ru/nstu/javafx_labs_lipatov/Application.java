@@ -26,7 +26,11 @@ public class Application extends javafx.application.Application {
         school.setMaleStudentP(0.5F);
         school.setMaleStudentN(2);
         school.setFemaleStudentP(0.2F);
-        school.setFemaleStudentN(1);
+        school.setFemaleStudentN(3);
+        school.getController().getMaleSpawnTimeTextField().setText("2");
+        school.getController().getMaleSpawnProbabilityBox().getSelectionModel().select("50 %");
+        school.getController().getFemaleSpawnProbabilityBox().getSelectionModel().select("80 %");
+        school.getController().getFemaleSpawnTimeTextField().setText("3");
         stage.setTitle("Студенты и Студентки");
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

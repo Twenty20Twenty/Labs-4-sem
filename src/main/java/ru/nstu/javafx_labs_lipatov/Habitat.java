@@ -1,11 +1,17 @@
 package ru.nstu.javafx_labs_lipatov;
 
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.Student;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -22,13 +28,14 @@ public class Habitat {
     private int n1;
     private int n2;
     private boolean startFlag;
-    private boolean informationWindowFlag = false;
+    private boolean informationWindowFlag = true;
     public boolean timeFlag = true;
     private boolean statisticFlag;
     private int seconds;
     private int minutes;
     private Timer timer;
     private long startTime;
+    private long pauseTime;
 
     public static int getWidth() {
         return width;
@@ -58,10 +65,9 @@ public class Habitat {
         this.informationWindowFlag = informationFlag;
     }
 
-    public void setStatisticFlag(boolean statisticFlag) {
-        this.statisticFlag = statisticFlag;
+    public Controller getController() {
+        return controller;
     }
-
     public void setMaleStudentP(float p) {
         p1 = p;
     }
@@ -91,12 +97,41 @@ public class Habitat {
         minutes = 0;
         timer = new Timer();
         startTime = System.currentTimeMillis();
-        //showStatisticLabel();
         startWork();
     }
 
     public void pauseGeneration(){
+        pauseTime = System.currentTimeMillis();
+        timer.cancel();
+        String statistic = "Создано студентов: " + MaleStudent.countMaleStudent + "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
+        statistic += "\nВремя симуляции: " + (System.currentTimeMillis()-startTime)/1000 + " (сек)";
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModalWindow1.fxml"));
+            Parent root = loader.load();
+            ModalWindow modalController = loader.getController();
+            modalController.parentController = controller;
+            modalController.setText(statistic);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setMaximized(false);
+            stage.setResizable(false);
+            stage.setTitle("Статистика");
+            stage.showAndWait();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
+    public void unPauseGeneration(){
+
+        startFlag = true;
+        statisticFlag = false;
+        timer = new Timer();
+        startTime += (System.currentTimeMillis() - pauseTime);
+        startWork();
     }
 
     public void stopGeneration() {
@@ -146,12 +181,12 @@ public class Habitat {
         float p = random.nextFloat();
         try {
             if ((time % n1 == 0) && (p1 <= p)) {
-                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
+                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
                 controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }
             if ((time % n2 == 0) && (p2 <= p)) {
-                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300));
+                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
                 controller.getVisualPane().getChildren().add(student.getImageView());
                 array.add(student);
             }

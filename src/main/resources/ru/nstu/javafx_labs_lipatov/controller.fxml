@@ -10,14 +10,16 @@
    <items>
       <Pane fx:id="managmentPane" prefHeight="200.0" prefWidth="598.0" style="-fx-background-color: #808080;">
          <children>
-            <Button fx:id="buttonStart" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font></Button>
-            <RadioButton fx:id="informationSwitch" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Показывать информацию">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></RadioButton>
+             <Button fx:id="buttonStart" disable="false" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
+                <font>
+                   <Font name="System Bold" size="15.0" />
+                </font>
+             </Button>
+             <Button fx:id="buttonStop" disable="true" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="15.0" />
+                </font>
+             </Button>
             <RadioButton fx:id="radioButtonShowTimer" layoutX="85.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" selected="true" text="Показывать время симуляции">
                <toggleGroup>
                   <ToggleGroup fx:id="tgTimer" />
@@ -30,15 +32,14 @@
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#menuStart" text="Начать генерацию" />
                         <MenuItem mnemonicParsing="false" onAction="#menuStop" text="Остановить генерацию" />
-                        <MenuItem mnemonicParsing="false" text="Закрыть программу" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuExit" text="Закрыть программу" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Панель инструментов">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#menuShowTimer" text="Показывать время симуляции" />
                         <MenuItem mnemonicParsing="false" onAction="#menuHideTimer" text="Скрывать время симуляции" />
-                        <MenuItem mnemonicParsing="false" text="3" />
-                        <MenuItem mnemonicParsing="false" text="4" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuShowInformation" text="Показывать информацию" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" onAction="#menuShowTimer" text="Инфо">
@@ -55,13 +56,13 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="applyMalePropertiesButton" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#maleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
-                  <TextField fx:id="maleSpawnTime" alignment="CENTER" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                  <Button fx:id="applyMaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#maleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="maleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextField>
-                  <ComboBox fx:id="maleSpawnProbability" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                  <ComboBox fx:id="maleSpawnProbability" disable="false" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
                       <items>
                           <FXCollections fx:factory="observableArrayList">
                               <String fx:value="0 %" />
@@ -80,11 +81,6 @@
                   </ComboBox>
                </children>
             </Pane>
-            <Button fx:id="buttonStop" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
             <Pane layoutX="300.0" layoutY="107.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="290.0">
                <children>
                   <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТКИ">
@@ -92,13 +88,13 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="applyFemalePropertiesButton" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#femaleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
-                  <TextField fx:id="femaleSpawnTime" alignment="CENTER" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                  <Button fx:id="applyFemaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#femaleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="femaleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextField>
-                  <ComboBox fx:id="femaleSpawnProbability" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                  <ComboBox fx:id="femaleSpawnProbability" disable="false" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
                       <items>
                           <FXCollections fx:factory="observableArrayList">
                               <String fx:value="0 %" />
@@ -117,6 +113,10 @@
                   </ComboBox>
                </children>
             </Pane>
+            <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleInformationsCheckBox" selected="true" text="Показывать информацию">
+               <font>
+                  <Font size="14.0" />
+               </font></CheckBox>
          </children>
       </Pane>
       <Pane fx:id="visualizationPane" prefHeight="400.0" prefWidth="598.0" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
