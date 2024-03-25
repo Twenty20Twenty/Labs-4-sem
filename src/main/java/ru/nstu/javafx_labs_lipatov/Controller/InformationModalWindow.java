@@ -1,12 +1,14 @@
-package ru.nstu.javafx_labs_lipatov;
+package ru.nstu.javafx_labs_lipatov.Controller;
 
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import ru.nstu.javafx_labs_lipatov.Controller.Controller;
+import ru.nstu.javafx_labs_lipatov.Habitat;
 
-public class ModalWindow {
+public class InformationModalWindow {
     @FXML
     private Button btnOk;
     @FXML

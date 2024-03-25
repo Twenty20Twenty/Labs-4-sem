@@ -1,14 +1,16 @@
-package ru.nstu.javafx_labs_lipatov;
+package ru.nstu.javafx_labs_lipatov.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ru.nstu.javafx_labs_lipatov.Habitat;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static java.lang.Math.abs;
 
@@ -19,8 +21,6 @@ public class Controller {
     private Label labelTextTIMER;
     @FXML
     private Label labelTimer;
-    @FXML
-    private RadioButton informationSwitch;
     @FXML
     private RadioButton radioButtonShowTimer;
     @FXML
@@ -43,6 +43,21 @@ public class Controller {
     private Button applyFemaleProp;
     @FXML
     private CheckBox informationCheckBox;
+
+    private TreeMap<String, Float> comboBoxMap = new TreeMap<>();
+
+
+    public void setComboBoxMap() {
+        int procent = 0;
+        float tmp = 0.1F;
+        for (int i = 0; i < 11; i++) {
+            procent = 10 * i;
+            tmp = (1.0F - 0.1F * i);
+            String tmpStr = Integer.toString(procent) + " %";
+            comboBoxMap.put(tmpStr, tmp);
+        }
+    }
+
 
     public Pane getVisualPane() {
         return visualizationPane;
@@ -102,7 +117,6 @@ public class Controller {
         if (radioButtonHideTimer.isSelected()) {
             Habitat.getInstance().showTimer();
         }
-
     }
 
     @FXML
@@ -129,7 +143,8 @@ public class Controller {
                 break;
         }
     }
-    private void startFunk(){
+
+    private void startFunk() {
         Habitat.getInstance().startGeneration();
         buttonStart.setDisable(true);
         buttonStop.setDisable(false);
@@ -141,7 +156,7 @@ public class Controller {
         femaleSpawnProbability.setDisable(true);
     }
 
-    private void stopFunk(){
+    private void stopFunk() {
         if (Habitat.getInstance().isStartFlag()) {
             if (Habitat.getInstance().isInformationWindowFlag()) {
                 Habitat.getInstance().pauseGeneration();
@@ -152,7 +167,6 @@ public class Controller {
                 buttonStart.setDisable(false);
                 buttonStop.setDisable(true);
             }
-
         }
         applyMaleProp.setDisable(false);
         maleSpawnTimeTextField.setDisable(false);
@@ -161,6 +175,7 @@ public class Controller {
         femaleSpawnTimeTextField.setDisable(false);
         femaleSpawnProbability.setDisable(false);
     }
+
     @FXML
     private void menuStart(ActionEvent event) {
         startFunk();
@@ -206,49 +221,19 @@ public class Controller {
         String userChoiseP = (String) maleSpawnProbability.getSelectionModel().getSelectedItem();
         if (userChoiseP == null)
             userChoiseP = "null";
-        switch (userChoiseP) {
-            case "0 %":
-                Habitat.getInstance().setMaleStudentP(1.0f);
-                break;
-            case "10 %":
-                Habitat.getInstance().setMaleStudentP(0.9f);
-                break;
-            case "20 %":
-                Habitat.getInstance().setMaleStudentP(0.8f);
-                break;
-            case "30 %":
-                Habitat.getInstance().setMaleStudentP(0.7f);
-                break;
-            case "40 %":
-                Habitat.getInstance().setMaleStudentP(0.6f);
-                break;
-            case "50 %":
-                Habitat.getInstance().setMaleStudentP(0.5f);
-                break;
-            case "60 %":
-                Habitat.getInstance().setMaleStudentP(0.4f);
-                break;
-            case "70 %":
-                Habitat.getInstance().setMaleStudentP(0.3f);
-                break;
-            case "80 %":
-                Habitat.getInstance().setMaleStudentP(0.2f);
-                break;
-            case "90 %":
-                Habitat.getInstance().setMaleStudentP(0.1f);
-                break;
-            case "100 %":
-                Habitat.getInstance().setMaleStudentP(0f);
-                break;
-            case "null":
-                Habitat.getInstance().setMaleStudentP(0f);
-                maleSpawnProbability.getSelectionModel().selectLast();
-                break;
+
+        for(Map.Entry<String, Float> entry : comboBoxMap.entrySet()){
+            String key = entry.getKey();
+            Float value = entry.getValue();
+            if (userChoiseP.equals(key)){
+                Habitat.getInstance().setMaleStudentP(value);
+            }
         }
+
         String userChoiseN = maleSpawnTimeTextField.getText();
         try {
             int n = Integer.parseInt(userChoiseN);
-            if (n < 0){
+            if (n < 0) {
                 n = abs(n);
                 Habitat.getInstance().setMaleStudentN(n);
                 maleSpawnTimeTextField.setText(String.valueOf(n));
@@ -267,49 +252,19 @@ public class Controller {
         String userChoiseP = (String) femaleSpawnProbability.getSelectionModel().getSelectedItem();
         if (userChoiseP == null)
             userChoiseP = "null";
-        switch (userChoiseP) {
-            case "0 %":
-                Habitat.getInstance().setFemaleStudentP(1.0f);
-                break;
-            case "10 %":
-                Habitat.getInstance().setFemaleStudentP(0.9f);
-                break;
-            case "20 %":
-                Habitat.getInstance().setFemaleStudentP(0.8f);
-                break;
-            case "30 %":
-                Habitat.getInstance().setFemaleStudentP(0.7f);
-                break;
-            case "40 %":
-                Habitat.getInstance().setFemaleStudentP(0.6f);
-                break;
-            case "50 %":
-                Habitat.getInstance().setFemaleStudentP(0.5f);
-                break;
-            case "60 %":
-                Habitat.getInstance().setFemaleStudentP(0.4f);
-                break;
-            case "70 %":
-                Habitat.getInstance().setFemaleStudentP(0.3f);
-                break;
-            case "80 %":
-                Habitat.getInstance().setFemaleStudentP(0.2f);
-                break;
-            case "90 %":
-                Habitat.getInstance().setFemaleStudentP(0.1f);
-                break;
-            case "100 %":
-                Habitat.getInstance().setFemaleStudentP(0f);
-                break;
-            case "null":
-                Habitat.getInstance().setFemaleStudentP(0f);
-                femaleSpawnProbability.getSelectionModel().selectLast();
-                break;
+
+        for(Map.Entry<String, Float> entry : comboBoxMap.entrySet()){
+            String key = entry.getKey();
+            Float value = entry.getValue();
+            if (userChoiseP.equals(key)){
+                Habitat.getInstance().setFemaleStudentP(value);
+            }
         }
+
         String userChoiseN = femaleSpawnTimeTextField.getText();
         try {
             int n = Integer.parseInt(userChoiseN);
-            if (n < 0){
+            if (n < 0) {
                 n = abs(n);
                 Habitat.getInstance().setFemaleStudentN(n);
                 femaleSpawnTimeTextField.setText(String.valueOf(n));

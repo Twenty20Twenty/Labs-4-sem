@@ -6,27 +6,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.nstu.javafx_labs_lipatov.Controller.Controller;
+import ru.nstu.javafx_labs_lipatov.Controller.InformationModalWindow;
 import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.Student;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Habitat {
     private static volatile Habitat instance;
     private static int width = 600;
     private static int height = 600;
-    private ArrayList<Student> array = new ArrayList<Student>();
+    private LinkedList<Student> listObjects = new LinkedList<Student>();
     private Controller controller;
-    private float p1;
-    private float p2;
-    private int n1;
-    private int n2;
+    private float pMale;
+    private float pFemale;
+    private int timeMale;
+    private int timeFemale;
     private boolean startFlag;
     private boolean informationWindowFlag = true;
     public boolean timeFlag = true;
@@ -69,19 +68,19 @@ public class Habitat {
         return controller;
     }
     public void setMaleStudentP(float p) {
-        p1 = p;
+        pMale = p;
     }
 
     public void setMaleStudentN(int n) {
-        n1 = n;
+        timeMale = n;
     }
 
     public void setFemaleStudentP(float p) {
-        p2 = p;
+        pFemale = p;
     }
 
     public void setFemaleStudentN(int n) {
-        n2 = n;
+        timeFemale = n;
     }
 
     public Timer getTimer() {
@@ -104,11 +103,11 @@ public class Habitat {
         pauseTime = System.currentTimeMillis();
         timer.cancel();
         String statistic = "Создано студентов: " + MaleStudent.countMaleStudent + "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-        statistic += "\nВремя симуляции: " + (System.currentTimeMillis()-startTime)/1000 + " (сек)";
+        statistic += "\nВремя симуляции: " + (System.currentTimeMillis()-startTime) + " (мс)";
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModalWindow1.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("modalWindow.fxml"));
             Parent root = loader.load();
-            ModalWindow modalController = loader.getController();
+            InformationModalWindow modalController = loader.getController();
             modalController.parentController = controller;
             modalController.setText(statistic);
             Stage stage = new Stage();
@@ -167,7 +166,7 @@ public class Habitat {
                 });
 
             }
-        }, 0, 50);
+        }, 0,  50);
     }
 
     public void update(long time) {
@@ -180,15 +179,15 @@ public class Habitat {
         Random random = new Random();
         float p = random.nextFloat();
         try {
-            if ((time % n1 == 0) && (p1 <= p)) {
+            if ((time % timeMale == 0) && (pMale <= p)) {
                 MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
                 controller.getVisualPane().getChildren().add(student.getImageView());
-                array.add(student);
+                listObjects.add(student);
             }
-            if ((time % n2 == 0) && (p2 <= p)) {
+            if ((time % timeFemale == 0) && (pFemale <= p)) {
                 FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
                 controller.getVisualPane().getChildren().add(student.getImageView());
-                array.add(student);
+                listObjects.add(student);
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -196,8 +195,8 @@ public class Habitat {
     }
 
     public void clearList() {
-        array.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
-        array.clear();
+        listObjects.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
+        listObjects.clear();
     }
 
     public String getStatistic() {
