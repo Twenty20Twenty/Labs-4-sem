@@ -103,11 +103,6 @@ public class Controller {
             Habitat.getInstance().showTimer();
         }
 
-        if (informationSwitch.isSelected()) {
-            Habitat.getInstance().setInformationWindowFlag(true);
-        } else {
-            Habitat.getInstance().setInformationWindowFlag(false);
-        }
     }
 
     @FXML
