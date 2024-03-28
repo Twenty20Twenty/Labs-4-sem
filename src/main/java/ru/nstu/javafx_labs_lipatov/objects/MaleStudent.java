@@ -1,15 +1,19 @@
 package ru.nstu.javafx_labs_lipatov.objects;
 
 import javafx.scene.image.Image;
-import ru.nstu.javafx_labs_lipatov.IBehaviour;
-import ru.nstu.javafx_labs_lipatov.objects.Student;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class MaleStudent extends Student implements IBehaviour {
+public class MaleStudent extends Student {
     public static int countMaleStudent = 0;
     public static Image image;
+    public static int liveTime = 4;
+
+
+    public static void setLiveTime(int liveTime) {
+        MaleStudent.liveTime = liveTime;
+    }
 
     static {
         try{

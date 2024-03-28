@@ -3,12 +3,13 @@
 <?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.Controller.Controller">
    <items>
-      <Pane fx:id="managmentPane" prefHeight="200.0" prefWidth="598.0" style="-fx-background-color: #808080;">
+      <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
          <children>
              <Button fx:id="buttonStart" disable="false" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
                 <font>
@@ -30,26 +31,26 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Главное">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#menuStart" text="Начать генерацию" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuStop" text="Остановить генерацию" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuExit" text="Закрыть программу" />
+                      <MenuItem fx:id="startMenuItem" disable="false" mnemonicParsing="false" onAction="#menuStart" text="Начать генерацию" />
+                      <MenuItem fx:id="stopMenuItem" disable="true" mnemonicParsing="false" onAction="#menuStop" text="Остановить генерацию" />
+                      <MenuItem disable="false" mnemonicParsing="false" onAction="#menuExit" text="Закрыть программу" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Панель инструментов">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#menuShowTimer" text="Показывать время симуляции" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuHideTimer" text="Скрывать время симуляции" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuShowInformation" text="Показывать информацию" />
+                        <MenuItem fx:id="showTimeMenuItem" disable="true" mnemonicParsing="false" onAction="#menuShowTimer" text="Показывать время симуляции" />
+                        <MenuItem fx:id="hideTimeMenuItem" disable="false" mnemonicParsing="false" onAction="#menuHideTimer" text="Скрывать время симуляции" />
+                        <MenuItem disable="false" mnemonicParsing="false" onAction="#menuShowInformation" text="Показывать информацию" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" onAction="#menuShowTimer" text="Инфо">
+                  <Menu mnemonicParsing="false" text="Инфо">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Авторы" />
                     </items>
                   </Menu>
               </menus>
             </MenuBar>
-            <Pane layoutX="300.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="290.0">
+            <Pane layoutX="300.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="290.0">
                <children>
                   <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТА">
                      <font>
@@ -79,9 +80,14 @@
                           </FXCollections>
                       </items>
                   </ComboBox>
+                  <TextField fx:id="maleLifeTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="64.0" prefHeight="25.0" prefWidth="70.0" promptText="LifeTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
                </children>
             </Pane>
-            <Pane layoutX="300.0" layoutY="107.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="67.0" prefWidth="290.0">
+            <Pane layoutX="300.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="290.0">
                <children>
                   <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТКИ">
                      <font>
@@ -111,23 +117,31 @@
                           </FXCollections>
                       </items>
                   </ComboBox>
+                  <TextField fx:id="femaleLifeTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="64.0" prefHeight="25.0" prefWidth="70.0" promptText="LifeTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
                </children>
             </Pane>
             <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleInformationsCheckBox" selected="true" text="Показывать информацию">
                <font>
                   <Font size="14.0" />
                </font></CheckBox>
+            <Button fx:id="liveObjectButton" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" onAction="#liveObjAction" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
          </children>
       </Pane>
-      <Pane fx:id="visualizationPane" prefHeight="400.0" prefWidth="598.0" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
+      <Pane fx:id="visualizationPane" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
          <children>
-            <Label fx:id="labelTextTIMER" layoutX="14.0" layoutY="14.0" text="Timer:" />
-            <Label fx:id="labelTimer" layoutX="54.0" layoutY="14.0" />
-            <Label fx:id="statistic" alignment="CENTER" layoutX="178.0" layoutY="103.0" prefHeight="151.0" prefWidth="242.0" textAlignment="CENTER">
+            <ImageView fitHeight="356.0" fitWidth="598.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@backdround_AVTF.jpg" />
+               </image></ImageView>
+            <Label fx:id="labelTextTIMER" layoutX="14.0" layoutY="14.0" text="Timer:">
                <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="labelTimer" layoutX="54.0" layoutY="14.0" />
          </children>
       </Pane>
    </items>

@@ -9,7 +9,7 @@
    <children>
       <TextArea fx:id="mainText" editable="false" prefHeight="250.0" prefWidth="280.0">
          <font>
-            <Font name="JetBrains Mono Medium" size="20.0" />
+            <Font name="JetBrains Mono Medium" size="18.0" />
          </font>
          <FlowPane.margin>
             <Insets left="10.0" top="10.0" />

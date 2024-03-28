@@ -7,14 +7,24 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov.Habitat;
+import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
+import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
+import ru.nstu.javafx_labs_lipatov.objects.StudentCollections;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static java.lang.Math.abs;
-
 public class Controller {
+    @FXML
+    public MenuItem startMenuItem;
+    @FXML
+    public MenuItem stopMenuItem;
+    @FXML
+    public MenuItem showTimeMenuItem;
+    @FXML
+    public MenuItem hideTimeMenuItem;
+    private TreeMap<String, Float> comboBoxMap = new TreeMap<>();
     @FXML
     private Pane visualizationPane;
     @FXML
@@ -34,6 +44,10 @@ public class Controller {
     @FXML
     private TextField femaleSpawnTimeTextField;
     @FXML
+    private TextField maleLifeTimeTextField;
+    @FXML
+    private TextField femaleLifeTimeTextField;
+    @FXML
     private ComboBox maleSpawnProbability;
     @FXML
     private ComboBox femaleSpawnProbability;
@@ -43,9 +57,8 @@ public class Controller {
     private Button applyFemaleProp;
     @FXML
     private CheckBox informationCheckBox;
-
-    private TreeMap<String, Float> comboBoxMap = new TreeMap<>();
-
+    @FXML
+    private Button liveObjButton;
 
     public void setComboBoxMap() {
         int procent = 0;
@@ -56,44 +69,6 @@ public class Controller {
             String tmpStr = Integer.toString(procent) + " %";
             comboBoxMap.put(tmpStr, tmp);
         }
-    }
-
-
-    public Pane getVisualPane() {
-        return visualizationPane;
-    }
-
-    public Label getLabelTextTIMER() {
-        return labelTextTIMER;
-    }
-
-    public Label getLabelTimer() {
-        return labelTimer;
-    }
-
-
-    public RadioButton getRadioButtonShowTimer() {
-        return radioButtonShowTimer;
-    }
-
-    public RadioButton getRadioButtonHideTimer() {
-        return radioButtonHideTimer;
-    }
-
-    public TextField getMaleSpawnTimeTextField() {
-        return maleSpawnTimeTextField;
-    }
-
-    public TextField getFemaleSpawnTimeTextField() {
-        return femaleSpawnTimeTextField;
-    }
-
-    public ComboBox getMaleSpawnProbabilityBox() {
-        return maleSpawnProbability;
-    }
-
-    public ComboBox getFemaleSpawnProbabilityBox() {
-        return femaleSpawnProbability;
     }
 
     @FXML
@@ -129,6 +104,9 @@ public class Controller {
     }
 
     @FXML
+    private void liveObjAction(ActionEvent event){}
+
+    @FXML
     void keyPressed(KeyEvent key) {
         key.consume();
         switch (key.getCode()) {
@@ -154,6 +132,8 @@ public class Controller {
         applyFemaleProp.setDisable(true);
         femaleSpawnTimeTextField.setDisable(true);
         femaleSpawnProbability.setDisable(true);
+        maleLifeTimeTextField.setDisable(true);
+        femaleLifeTimeTextField.setDisable(true);
     }
 
     private void stopFunk() {
@@ -174,16 +154,22 @@ public class Controller {
         applyFemaleProp.setDisable(false);
         femaleSpawnTimeTextField.setDisable(false);
         femaleSpawnProbability.setDisable(false);
+        maleLifeTimeTextField.setDisable(false);
+        femaleLifeTimeTextField.setDisable(false);
     }
 
     @FXML
     private void menuStart(ActionEvent event) {
         startFunk();
+        startMenuItem.setDisable(true);
+        stopMenuItem.setDisable(false);
     }
 
     @FXML
     private void menuStop(ActionEvent event) {
         stopFunk();
+        startMenuItem.setDisable(false);
+        stopMenuItem.setDisable(true);
     }
 
     @FXML
@@ -200,18 +186,22 @@ public class Controller {
     @FXML
     void menuHideTimer(ActionEvent event) {
         Habitat.getInstance().showTimer();
+        showTimeMenuItem.setDisable(false);
+        hideTimeMenuItem.setDisable(true);
     }
 
     @FXML
     void menuShowTimer(ActionEvent event) {
         Habitat.getInstance().showTimer();
+        showTimeMenuItem.setDisable(true);
+        hideTimeMenuItem.setDisable(false);
     }
 
     @FXML
     void menuExit(ActionEvent event) {
         if (Habitat.getInstance().isStartFlag())
             Habitat.getInstance().getTimer().cancel();
-        Habitat.getInstance().clearList();
+        StudentCollections.getInstance().clearCollections(this);
         Stage stage = (Stage) buttonStart.getScene().getWindow();
         stage.close();
     }
@@ -222,10 +212,10 @@ public class Controller {
         if (userChoiseP == null)
             userChoiseP = "null";
 
-        for(Map.Entry<String, Float> entry : comboBoxMap.entrySet()){
+        for (Map.Entry<String, Float> entry : comboBoxMap.entrySet()) {
             String key = entry.getKey();
             Float value = entry.getValue();
-            if (userChoiseP.equals(key)){
+            if (userChoiseP.equals(key)) {
                 Habitat.getInstance().setMaleStudentP(value);
             }
         }
@@ -234,15 +224,27 @@ public class Controller {
         try {
             int n = Integer.parseInt(userChoiseN);
             if (n < 0) {
-                n = abs(n);
-                Habitat.getInstance().setMaleStudentN(n);
-                maleSpawnTimeTextField.setText(String.valueOf(n));
+                throw new NumberFormatException();
             }
             Habitat.getInstance().setMaleStudentN(n);
         } catch (NumberFormatException e) {
             Habitat.getInstance().setMaleStudentN(2);
             maleSpawnTimeTextField.setText("2");
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод периода рождения студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод ПЕРИОДА РОЖДЕНИЯ студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            alert.showAndWait();
+        }
+
+        String userChoiseLifeT = maleLifeTimeTextField.getText();
+        try {
+            int n = Integer.parseInt(userChoiseLifeT);
+            if (n < 0) {
+                throw new NumberFormatException();
+            }
+            MaleStudent.setLiveTime(n);
+        } catch (NumberFormatException e) {
+            MaleStudent.setLiveTime(4);
+            maleLifeTimeTextField.setText("4");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод ВРЕМЕНИ ЖИЗНИ студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
             alert.showAndWait();
         }
     }
@@ -253,10 +255,10 @@ public class Controller {
         if (userChoiseP == null)
             userChoiseP = "null";
 
-        for(Map.Entry<String, Float> entry : comboBoxMap.entrySet()){
+        for (Map.Entry<String, Float> entry : comboBoxMap.entrySet()) {
             String key = entry.getKey();
             Float value = entry.getValue();
-            if (userChoiseP.equals(key)){
+            if (userChoiseP.equals(key)) {
                 Habitat.getInstance().setFemaleStudentP(value);
             }
         }
@@ -265,16 +267,27 @@ public class Controller {
         try {
             int n = Integer.parseInt(userChoiseN);
             if (n < 0) {
-                n = abs(n);
-                Habitat.getInstance().setFemaleStudentN(n);
-                femaleSpawnTimeTextField.setText(String.valueOf(n));
+                throw new NumberFormatException();
             }
             Habitat.getInstance().setFemaleStudentN(n);
-
         } catch (NumberFormatException e) {
             Habitat.getInstance().setFemaleStudentN(3);
             femaleSpawnTimeTextField.setText("3");
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод периода рождения студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод ПЕРИОДА РОЖДЕНИЯ студентки. Разрешено вводить только целые положительные числа", ButtonType.OK);
+            alert.showAndWait();
+        }
+
+        String userChoiseLifeT = femaleLifeTimeTextField.getText();
+        try {
+            int n = Integer.parseInt(userChoiseLifeT);
+            if (n < 0) {
+                throw new NumberFormatException();
+            }
+            FemaleStudent.setLiveTime(n);
+        } catch (NumberFormatException e) {
+            FemaleStudent.setLiveTime(5);
+            femaleLifeTimeTextField.setText("5");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод ВРЕМЕНИ ЖИЗНИ студентки. Разрешено вводить только целые положительные числа", ButtonType.OK);
             alert.showAndWait();
         }
     }
@@ -285,5 +298,49 @@ public class Controller {
 
     public Button getButtonStart() {
         return buttonStart;
+    }
+
+    public Pane getVisualPane() {
+        return visualizationPane;
+    }
+
+    public Label getLabelTextTIMER() {
+        return labelTextTIMER;
+    }
+
+    public Label getLabelTimer() {
+        return labelTimer;
+    }
+
+    public RadioButton getRadioButtonShowTimer() {
+        return radioButtonShowTimer;
+    }
+
+    public RadioButton getRadioButtonHideTimer() {
+        return radioButtonHideTimer;
+    }
+
+    public TextField getMaleSpawnTimeTextField() {
+        return maleSpawnTimeTextField;
+    }
+
+    public TextField getFemaleSpawnTimeTextField() {
+        return femaleSpawnTimeTextField;
+    }
+
+    public ComboBox getMaleSpawnProbabilityBox() {
+        return maleSpawnProbability;
+    }
+
+    public ComboBox getFemaleSpawnProbabilityBox() {
+        return femaleSpawnProbability;
+    }
+
+    public TextField getMaleLifeTimeTextField() {
+        return maleLifeTimeTextField;
+    }
+
+    public TextField getFemaleLifeTimeTextField() {
+        return femaleLifeTimeTextField;
     }
 }

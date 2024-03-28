@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ru.nstu.javafx_labs_lipatov.objects.StudentCollections;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("controller.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
         Parent root = fxmlLoader.load();
         school = new Habitat(fxmlLoader.getController());
         Habitat.setInstance(school);
@@ -31,6 +32,8 @@ public class Application extends javafx.application.Application {
         school.getController().getMaleSpawnProbabilityBox().getSelectionModel().select("50 %");
         school.getController().getFemaleSpawnProbabilityBox().getSelectionModel().select("80 %");
         school.getController().getFemaleSpawnTimeTextField().setText("3");
+        school.getController().getFemaleLifeTimeTextField().setText("5");
+        school.getController().getMaleLifeTimeTextField().setText("4");
         school.getController().setComboBoxMap();
         stage.setTitle("Студенты и Студентки");
         stage.setScene(scene);
@@ -39,7 +42,7 @@ public class Application extends javafx.application.Application {
             public void handle(WindowEvent event) {
                 if (school.isStartFlag())
                     school.getTimer().cancel();
-                school.clearList();
+                StudentCollections.getInstance().clearCollections(Habitat.getInstance().getController());
                 stage.close();
             }
         });

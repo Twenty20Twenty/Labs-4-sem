@@ -11,6 +11,7 @@ import ru.nstu.javafx_labs_lipatov.Controller.InformationModalWindow;
 import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.Student;
+import ru.nstu.javafx_labs_lipatov.objects.StudentCollections;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +30,6 @@ public class Habitat {
     private boolean startFlag;
     private boolean informationWindowFlag = true;
     public boolean timeFlag = true;
-    private boolean statisticFlag;
     private int seconds;
     private int minutes;
     private Timer timer;
@@ -67,6 +67,7 @@ public class Habitat {
     public Controller getController() {
         return controller;
     }
+
     public void setMaleStudentP(float p) {
         pMale = p;
     }
@@ -91,19 +92,19 @@ public class Habitat {
         MaleStudent.countMaleStudent = 0;
         FemaleStudent.countFemaleStudent = 0;
         startFlag = true;
-        statisticFlag = false;
-        seconds = 0;
+        seconds = -1;
         minutes = 0;
         timer = new Timer();
         startTime = System.currentTimeMillis();
+        secStart = startTime;
         startWork();
     }
 
-    public void pauseGeneration(){
+    public void pauseGeneration() {
         pauseTime = System.currentTimeMillis();
         timer.cancel();
         String statistic = "Создано студентов: " + MaleStudent.countMaleStudent + "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-        statistic += "\nВремя симуляции: " + (System.currentTimeMillis()-startTime) + " (мс)";
+        statistic += "\nВремя симуляции: " + (System.currentTimeMillis() - startTime) + " (мс)";
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("modalWindow.fxml"));
             Parent root = loader.load();
@@ -118,60 +119,52 @@ public class Habitat {
             stage.setResizable(false);
             stage.setTitle("Статистика");
             stage.showAndWait();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void unPauseGeneration(){
-
+    public void unPauseGeneration() {
         startFlag = true;
-        statisticFlag = false;
         timer = new Timer();
         startTime += (System.currentTimeMillis() - pauseTime);
+        secStart += (System.currentTimeMillis() - pauseTime);
         startWork();
     }
 
     public void stopGeneration() {
         startFlag = false;
-        statisticFlag = true;
-        //showStatisticLabel();
         if (!startFlag) {
             timer.cancel();
-            clearList();
+            StudentCollections.getInstance().clearCollections(controller);
         }
     }
 
-    private int iter = 0;
+    private long secStart;
 
     private void startWork() {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                iter++;
-                if (iter % 20 == 0) {
-                    seconds++;
-                }
-                if (seconds == 60) {
+                if ((seconds % 60 == 0) && (seconds != 0)) {
                     minutes++;
+                    secStart = System.currentTimeMillis();
                     seconds = 0;
                 }
-
+                seconds = (int) (System.currentTimeMillis() - secStart) / 1000;
                 Platform.runLater(() -> {
                     updateTimer();
-                    if (iter % 20 == 0) {
-                        update(System.currentTimeMillis() - startTime);
-                    }
+                    update(System.currentTimeMillis() - startTime);
                 });
 
             }
-        }, 0,  50);
+        }, 0, 1000);
     }
 
     public void update(long time) {
         if (startFlag) {
             create(time / 1000);
+            StudentCollections.getInstance().updateCollections(time / 1000, controller);
         }
     }
 
@@ -180,23 +173,22 @@ public class Habitat {
         float p = random.nextFloat();
         try {
             if ((time % timeMale == 0) && (pMale <= p)) {
-                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
+                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
                 controller.getVisualPane().getChildren().add(student.getImageView());
-                listObjects.add(student);
+                StudentCollections.getInstance().linkedStudentList.add(student);
+                StudentCollections.getInstance().idHashSet.add(student.getId());
+                StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
             }
             if ((time % timeFemale == 0) && (pFemale <= p)) {
-                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300-25));
+                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
                 controller.getVisualPane().getChildren().add(student.getImageView());
-                listObjects.add(student);
+                StudentCollections.getInstance().linkedStudentList.add(student);
+                StudentCollections.getInstance().idHashSet.add(student.getId());
+                StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void clearList() {
-        listObjects.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
-        listObjects.clear();
     }
 
     public String getStatistic() {
