@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov.Controller.Controller;
-import ru.nstu.javafx_labs_lipatov.Controller.InformationModalWindow;
+import ru.nstu.javafx_labs_lipatov.Controller.ModalWindow;
 import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
 import ru.nstu.javafx_labs_lipatov.objects.Student;
@@ -100,24 +100,31 @@ public class Habitat {
         startWork();
     }
 
-    public void pauseGeneration() {
+    public void pauseGeneration(String fxmlLoader, String title) {
         pauseTime = System.currentTimeMillis();
         timer.cancel();
-        String statistic = "Создано студентов: " + MaleStudent.countMaleStudent + "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-        statistic += "\nВремя симуляции: " + (System.currentTimeMillis() - startTime) + " (мс)";
+        String text = new String();
+        switch (title){
+            case "Текущие объекты":
+                text = StudentCollections.getInstance().getLiveObjString().toString();
+                break;
+            case "Статистика":
+                text = Habitat.getInstance().getStatistic();
+                break;
+        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("modalWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlLoader));
             Parent root = loader.load();
-            InformationModalWindow modalController = loader.getController();
+            ModalWindow modalController = loader.getController();
             modalController.parentController = controller;
-            modalController.setText(statistic);
+            modalController.setText(text);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setMaximized(false);
             stage.setResizable(false);
-            stage.setTitle("Статистика");
+            stage.setTitle(title);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,12 +153,13 @@ public class Habitat {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                seconds = (int) (System.currentTimeMillis() - secStart) / 1000;
                 if ((seconds % 60 == 0) && (seconds != 0)) {
                     minutes++;
                     secStart = System.currentTimeMillis();
                     seconds = 0;
                 }
-                seconds = (int) (System.currentTimeMillis() - secStart) / 1000;
+
                 Platform.runLater(() -> {
                     updateTimer();
                     update(System.currentTimeMillis() - startTime);
@@ -192,9 +200,8 @@ public class Habitat {
     }
 
     public String getStatistic() {
-        String statistic = "Создано студентов: " + MaleStudent.countMaleStudent +
-                "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
-        statistic += "\nВремя работы: " + (System.currentTimeMillis() - startTime) / 1000 + "(сек)";
+        String statistic = "Создано студентов: " + MaleStudent.countMaleStudent + "\nСоздано студенток: " + FemaleStudent.countFemaleStudent;
+        statistic += "\nВремя симуляции: " + (System.currentTimeMillis() - startTime) + " (мс)";
         return statistic;
     }
 

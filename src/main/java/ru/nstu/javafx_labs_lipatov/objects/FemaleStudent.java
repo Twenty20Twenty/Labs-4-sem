@@ -10,9 +10,6 @@ public class FemaleStudent extends Student{
     public static Image image;
     public static int liveTime = 5;
 
-    public static int getLiveTime() {
-        return liveTime;
-    }
 
     public static void setLiveTime(int liveTime) {
         FemaleStudent.liveTime = liveTime;
@@ -20,7 +17,7 @@ public class FemaleStudent extends Student{
 
     static {
         try{
-            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov/FemaleStudent.png"));
+            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov/FemaleStudent1.png"));
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }

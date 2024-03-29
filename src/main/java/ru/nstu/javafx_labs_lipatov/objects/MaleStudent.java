@@ -10,7 +10,6 @@ public class MaleStudent extends Student {
     public static Image image;
     public static int liveTime = 4;
 
-
     public static void setLiveTime(int liveTime) {
         MaleStudent.liveTime = liveTime;
     }

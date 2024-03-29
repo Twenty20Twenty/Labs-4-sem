@@ -26,7 +26,7 @@ public class StudentCollections {
         }
         return instance;
     }
-    //private Controller controller;
+
     public void updateCollections(Long time, Controller controller) throws IndexOutOfBoundsException{
         for (int i = 0; i < linkedStudentList.size(); i++) {
             Student current = linkedStudentList.get(i);
@@ -47,6 +47,22 @@ public class StudentCollections {
                 }
             }
         }
+    }
+
+    public StringBuilder getLiveObjString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i =0; i < linkedStudentList.size(); i++){
+            Student current =  linkedStudentList.get(i);
+            if (current instanceof MaleStudent){
+                stringBuilder.append("Male Student ");
+            }else{
+                stringBuilder.append("Female Student ");
+            }
+            stringBuilder.append(current.getId() + " ");
+            stringBuilder.append(bornTreeMap.get(current.getId()));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder;
     }
 
     public void clearCollections(Controller controller) {

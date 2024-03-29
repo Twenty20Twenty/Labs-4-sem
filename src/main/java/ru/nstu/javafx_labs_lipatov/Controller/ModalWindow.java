@@ -5,10 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import ru.nstu.javafx_labs_lipatov.Controller.Controller;
 import ru.nstu.javafx_labs_lipatov.Habitat;
 
-public class InformationModalWindow {
+public class ModalWindow {
     @FXML
     private Button btnOk;
     @FXML
@@ -32,7 +31,8 @@ public class InformationModalWindow {
         Habitat.getInstance().unPauseGeneration();
         parentController.getButtonStop().setDisable(false);
         parentController.getButtonStart().setDisable(true);
-        Stage stage = (Stage)btnOk.getScene().getWindow();
+        parentController.getLiveObjButton().setDisable(false);
+        Stage stage = (Stage)btnCancel.getScene().getWindow();
         stage.close();
     }
 }

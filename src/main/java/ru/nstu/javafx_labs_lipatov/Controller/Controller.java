@@ -104,7 +104,9 @@ public class Controller {
     }
 
     @FXML
-    private void liveObjAction(ActionEvent event){}
+    private void liveObjAction(ActionEvent event){
+        Habitat.getInstance().pauseGeneration("liveObjWindow.fxml", "Текущие объекты");
+    }
 
     @FXML
     void keyPressed(KeyEvent key) {
@@ -134,18 +136,20 @@ public class Controller {
         femaleSpawnProbability.setDisable(true);
         maleLifeTimeTextField.setDisable(true);
         femaleLifeTimeTextField.setDisable(true);
+        liveObjButton.setDisable(false);
     }
 
     private void stopFunk() {
         if (Habitat.getInstance().isStartFlag()) {
             if (Habitat.getInstance().isInformationWindowFlag()) {
-                Habitat.getInstance().pauseGeneration();
+                Habitat.getInstance().pauseGeneration("infModalWindow.fxml", "Статистика");
             } else {
                 Habitat.getInstance().stopGeneration();
             }
             if (!Habitat.getInstance().isStartFlag()) {
                 buttonStart.setDisable(false);
                 buttonStop.setDisable(true);
+                liveObjButton.setDisable(true);
             }
         }
         applyMaleProp.setDisable(false);
@@ -342,5 +346,9 @@ public class Controller {
 
     public TextField getFemaleLifeTimeTextField() {
         return femaleLifeTimeTextField;
+    }
+
+    public Button getLiveObjButton() {
+        return liveObjButton;
     }
 }

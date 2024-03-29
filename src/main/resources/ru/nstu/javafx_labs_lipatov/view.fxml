@@ -128,7 +128,7 @@
                <font>
                   <Font size="14.0" />
                </font></CheckBox>
-            <Button fx:id="liveObjectButton" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" onAction="#liveObjAction" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
+            <Button fx:id="liveObjButton" disable="true" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" onAction="#liveObjAction" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
          </children>
       </Pane>
       <Pane fx:id="visualizationPane" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
