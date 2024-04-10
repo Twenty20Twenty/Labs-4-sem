@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.example</groupId>
-  <artifactId>JavaFX_labs_Lipatov</artifactId>
+  <groupId>ru.nstu</groupId>
+  <artifactId>JavaFX_labs_Lipatov_v2</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>JavaFX labs Lipatov</name>
+  <name>JavaFX labs Lipatov v2</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +58,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.example.javafx_labs_lipatov/ru.nstu.javafx_labs_lipatov.Application</mainClass>
+              <mainClass>ru.nstu.javafx_labs_lipatov_v2/ru.nstu.javafx_labs_lipatov_v2.Main</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

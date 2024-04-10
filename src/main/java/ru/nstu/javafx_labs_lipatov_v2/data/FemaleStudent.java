@@ -1,4 +1,4 @@
-package ru.nstu.javafx_labs_lipatov.objects;
+package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import javafx.scene.image.Image;
 
@@ -17,7 +17,7 @@ public class FemaleStudent extends Student{
 
     static {
         try{
-            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov/FemaleStudent1.png"));
+            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/FemaleStudent1.png"));
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }

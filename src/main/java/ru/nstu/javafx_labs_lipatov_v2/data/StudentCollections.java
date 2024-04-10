@@ -1,6 +1,6 @@
-package ru.nstu.javafx_labs_lipatov.objects;
+package ru.nstu.javafx_labs_lipatov_v2.data;
 
-import ru.nstu.javafx_labs_lipatov.Controller.Controller;
+import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,20 +27,20 @@ public class StudentCollections {
         return instance;
     }
 
-    public void updateCollections(Long time, Controller controller) throws IndexOutOfBoundsException{
+    public void updateCollections(Long time, HabitatView view) throws IndexOutOfBoundsException{
         for (int i = 0; i < linkedStudentList.size(); i++) {
             Student current = linkedStudentList.get(i);
             Long curBornTime = bornTreeMap.get(current.getId());
             if (current instanceof MaleStudent) {
                 if (time - curBornTime >= MaleStudent.liveTime){
-                    controller.getVisualPane().getChildren().remove(current.getImageView());
+                    view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());
                     linkedStudentList.remove(i);
                 }
             } else {
                 if (time - curBornTime >= FemaleStudent.liveTime){
-                    controller.getVisualPane().getChildren().remove(current.getImageView());
+                    view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());
                     linkedStudentList.remove(i);
@@ -65,8 +65,8 @@ public class StudentCollections {
         return stringBuilder;
     }
 
-    public void clearCollections(Controller controller) {
-        linkedStudentList.forEach((tmp) -> controller.getVisualPane().getChildren().remove(tmp.getImageView()));
+    public void clearCollections(HabitatView view) {
+        linkedStudentList.forEach((tmp) -> view.getVisualPane().getChildren().remove(tmp.getImageView()));
         linkedStudentList.clear();
         idHashSet.clear();
         bornTreeMap.clear();

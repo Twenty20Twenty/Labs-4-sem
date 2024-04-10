@@ -7,45 +7,45 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov.Controller.Controller">
+<SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
    <items>
       <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
          <children>
-             <Button fx:id="buttonStart" disable="false" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
+             <Button fx:id="buttonStart" disable="false" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
                 <font>
                    <Font name="System Bold" size="15.0" />
                 </font>
              </Button>
-             <Button fx:id="buttonStop" disable="true" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
+             <Button fx:id="buttonStop" disable="true" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
              </Button>
-            <RadioButton fx:id="radioButtonShowTimer" layoutX="85.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" selected="true" text="Показывать время симуляции">
+            <RadioButton fx:id="radioButtonShowTimer" layoutX="85.0" layoutY="96.0" mnemonicParsing="false" selected="true" text="Показывать время симуляции">
                <toggleGroup>
                   <ToggleGroup fx:id="tgTimer" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="radioButtonHideTimer" layoutX="85.0" layoutY="123.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Скрывать время симуляции" toggleGroup="$tgTimer" />
+            <RadioButton fx:id="radioButtonHideTimer" layoutX="85.0" layoutY="123.0" mnemonicParsing="false" text="Скрывать время симуляции" toggleGroup="$tgTimer" />
             <MenuBar prefHeight="25.0" prefWidth="600.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Главное">
                   <items>
-                      <MenuItem fx:id="startMenuItem" disable="false" mnemonicParsing="false" onAction="#menuStart" text="Начать генерацию" />
-                      <MenuItem fx:id="stopMenuItem" disable="true" mnemonicParsing="false" onAction="#menuStop" text="Остановить генерацию" />
-                      <MenuItem disable="false" mnemonicParsing="false" onAction="#menuExit" text="Закрыть программу" />
+                      <MenuItem fx:id="startMenuItem" disable="false" mnemonicParsing="false" text="Начать генерацию" />
+                      <MenuItem fx:id="stopMenuItem" disable="true" mnemonicParsing="false" text="Остановить генерацию" />
+                      <MenuItem fx:id="exitMenuItem" disable="false" mnemonicParsing="false" text="Закрыть программу" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Панель инструментов">
                   <items>
-                        <MenuItem fx:id="showTimeMenuItem" disable="true" mnemonicParsing="false" onAction="#menuShowTimer" text="Показывать время симуляции" />
-                        <MenuItem fx:id="hideTimeMenuItem" disable="false" mnemonicParsing="false" onAction="#menuHideTimer" text="Скрывать время симуляции" />
-                        <MenuItem disable="false" mnemonicParsing="false" onAction="#menuShowInformation" text="Показывать информацию" />
+                        <MenuItem fx:id="showTimeMenuItem" disable="true" mnemonicParsing="false" text="Показывать время симуляции" />
+                        <MenuItem fx:id="hideTimeMenuItem" disable="false" mnemonicParsing="false" text="Скрывать время симуляции" />
+                        <MenuItem fx:id="showInformationMenuItem" disable="false" mnemonicParsing="false" text="Показывать информацию" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Инфо">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Авторы" />
+                      <MenuItem fx:id="autorsMenuItem" mnemonicParsing="false" text="Авторы" />
                     </items>
                   </Menu>
               </menus>
@@ -57,7 +57,7 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="applyMaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#maleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <Button fx:id="applyMaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Применить" />
                   <TextField fx:id="maleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
                      <font>
                         <Font size="10.0" />
@@ -94,7 +94,7 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Button fx:id="applyFemaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" onAction="#femaleProperties" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <Button fx:id="applyFemaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Применить" />
                   <TextField fx:id="femaleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
                      <font>
                         <Font size="10.0" />
@@ -124,11 +124,11 @@
                   </TextField>
                </children>
             </Pane>
-            <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleInformationsCheckBox" selected="true" text="Показывать информацию">
+            <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" selected="true" text="Показывать информацию">
                <font>
                   <Font size="14.0" />
                </font></CheckBox>
-            <Button fx:id="liveObjButton" disable="true" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" onAction="#liveObjAction" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
+            <Button fx:id="liveObjButton" disable="true" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
          </children>
       </Pane>
       <Pane fx:id="visualizationPane" snapToPixel="false" style="-fx-background-color: #e1c6c6;">

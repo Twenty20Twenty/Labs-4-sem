@@ -1,4 +1,4 @@
-package ru.nstu.javafx_labs_lipatov;
+package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -6,86 +6,38 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ru.nstu.javafx_labs_lipatov.Controller.Controller;
-import ru.nstu.javafx_labs_lipatov.Controller.ModalWindow;
-import ru.nstu.javafx_labs_lipatov.objects.FemaleStudent;
-import ru.nstu.javafx_labs_lipatov.objects.MaleStudent;
-import ru.nstu.javafx_labs_lipatov.objects.Student;
-import ru.nstu.javafx_labs_lipatov.objects.StudentCollections;
+import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
+import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
+import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
+import ru.nstu.javafx_labs_lipatov_v2.ModalWindow;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Habitat {
-    private static volatile Habitat instance;
-    private static int width = 600;
-    private static int height = 600;
-    private LinkedList<Student> listObjects = new LinkedList<Student>();
-    private Controller controller;
-    private float pMale;
-    private float pFemale;
+public class HabitatModel {
+    private Timer timer;
+    private double pMale;
+    private double pFemale;
     private int timeMale;
     private int timeFemale;
-    private boolean startFlag;
-    private boolean informationWindowFlag = true;
-    public boolean timeFlag = true;
-    private int seconds;
-    private int minutes;
-    private Timer timer;
     private long startTime;
     private long pauseTime;
+    private int seconds;
+    private int minutes;
+    private boolean startFlag = false;
+    private boolean informationWindowFlag = true;
+    public boolean timeFlag = true;
+    HabitatView view;
 
-    public static int getWidth() {
-        return width;
-    }
-
-    public static int getHeight() {
-        return height;
-    }
-
-    public static void setInstance(Habitat instance) {
-        Habitat.instance = instance;
-    }
-
-    public Habitat(Controller controller) {
-        this.controller = controller;
-    }
-
-    public boolean isStartFlag() {
-        return startFlag;
-    }
-
-    public boolean isInformationWindowFlag() {
-        return informationWindowFlag;
-    }
-
-    public void setInformationWindowFlag(boolean informationFlag) {
-        this.informationWindowFlag = informationFlag;
-    }
-
-    public Controller getController() {
-        return controller;
-    }
-
-    public void setMaleStudentP(float p) {
-        pMale = p;
-    }
-
-    public void setMaleStudentN(int n) {
-        timeMale = n;
-    }
-
-    public void setFemaleStudentP(float p) {
-        pFemale = p;
-    }
-
-    public void setFemaleStudentN(int n) {
-        timeFemale = n;
-    }
-
-    public Timer getTimer() {
-        return timer;
+    public HabitatModel(double pMale, double pFemale, int timeMale, int timeFemale, HabitatView view) {
+        this.pMale = pMale;
+        this.pFemale = pFemale;
+        this.timeMale = timeMale;
+        this.timeFemale = timeFemale;
+        this.view = view;
     }
 
     public void startGeneration() {
@@ -104,19 +56,20 @@ public class Habitat {
         pauseTime = System.currentTimeMillis();
         timer.cancel();
         String text = new String();
-        switch (title){
+        switch (title) {
             case "Текущие объекты":
                 text = StudentCollections.getInstance().getLiveObjString().toString();
                 break;
             case "Статистика":
-                text = Habitat.getInstance().getStatistic();
+                text = getStatistic();
                 break;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlLoader));
+            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource(fxmlLoader));
             Parent root = loader.load();
+            ModalWindow modalWindow = new ModalWindow();
             ModalWindow modalController = loader.getController();
-            modalController.parentController = controller;
+            modalController.model = this;
             modalController.setText(text);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -143,7 +96,7 @@ public class Habitat {
         startFlag = false;
         if (!startFlag) {
             timer.cancel();
-            StudentCollections.getInstance().clearCollections(controller);
+            StudentCollections.getInstance().clearCollections(view);
         }
     }
 
@@ -172,7 +125,7 @@ public class Habitat {
     public void update(long time) {
         if (startFlag) {
             create(time / 1000);
-            StudentCollections.getInstance().updateCollections(time / 1000, controller);
+            StudentCollections.getInstance().updateCollections(time / 1000, view);
         }
     }
 
@@ -182,14 +135,14 @@ public class Habitat {
         try {
             if ((time % timeMale == 0) && (pMale <= p)) {
                 MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
-                controller.getVisualPane().getChildren().add(student.getImageView());
+                view.getVisualPane().getChildren().add(student.getImageView());
                 StudentCollections.getInstance().linkedStudentList.add(student);
                 StudentCollections.getInstance().idHashSet.add(student.getId());
                 StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
             }
             if ((time % timeFemale == 0) && (pFemale <= p)) {
                 FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
-                controller.getVisualPane().getChildren().add(student.getImageView());
+                view.getVisualPane().getChildren().add(student.getImageView());
                 StudentCollections.getInstance().linkedStudentList.add(student);
                 StudentCollections.getInstance().idHashSet.add(student.getId());
                 StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
@@ -213,33 +166,83 @@ public class Habitat {
         if (sec.length() < 2)
             sec = ("0" + sec);
         String time = min + ":" + sec;
-        controller.getLabelTimer().setText(time);
+        view.getLabelTimer().setText(time);
         if (timeFlag) {
-            controller.getLabelTimer().setVisible(true);
-            controller.getLabelTextTIMER().setVisible(true);
+            view.getLabelTimer().setVisible(true);
+            view.getLabelTextTIMER().setVisible(true);
         }
     }
 
     public void showTimer() {
         timeFlag = !timeFlag;
         if (timeFlag) {
-            controller.getLabelTextTIMER().setVisible(true);
-            controller.getLabelTimer().setVisible(true);
-            controller.getRadioButtonShowTimer().setSelected(true);
+            view.getLabelTextTIMER().setVisible(true);
+            view.getLabelTimer().setVisible(true);
+            view.getRadioButtonShowTimer().setSelected(true);
+            view.getShowTimeMenuItem().setDisable(true);
+            view.getHideTimeMenuItem().setDisable(false);
         } else {
-            controller.getLabelTextTIMER().setVisible(false);
-            controller.getLabelTimer().setVisible(false);
-            controller.getRadioButtonHideTimer().setSelected(true);
+            view.getLabelTextTIMER().setVisible(false);
+            view.getLabelTimer().setVisible(false);
+            view.getRadioButtonHideTimer().setSelected(true);
+            view.getShowTimeMenuItem().setDisable(false);
+            view.getHideTimeMenuItem().setDisable(true);
         }
     }
 
-    public static Habitat getInstance() {
-        Habitat localInstance = instance;
-        if (localInstance == null) {
-            synchronized (Habitat.class) {
-                localInstance = instance;
-            }
+    public void autorsWindow(){
+        try {
+            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource("autorsWindow.fxml"));
+            Parent root = loader.load();
+            ModalWindow modalWindow = new ModalWindow();
+            ModalWindow modalController = loader.getController();
+            modalController.model = this;
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setMaximized(false);
+            stage.setResizable(false);
+            stage.setTitle("Авторы");
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return localInstance;
+    }
+
+    public boolean isStartFlag() {
+        return startFlag;
+    }
+
+    public boolean isInformationWindowFlag() {
+        return informationWindowFlag;
+    }
+
+    public void setInformationWindowFlag(boolean informationFlag) {
+        this.informationWindowFlag = informationFlag;
+    }
+
+    public void setMaleStudentP(float p) {
+        pMale = p;
+    }
+
+    public void setMaleStudentN(int n) {
+        timeMale = n;
+    }
+
+    public void setFemaleStudentP(float p) {
+        pFemale = p;
+    }
+
+    public void setFemaleStudentN(int n) {
+        timeFemale = n;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public HabitatView getView() {
+        return view;
     }
 }

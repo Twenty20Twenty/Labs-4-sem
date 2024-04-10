@@ -1,7 +1,6 @@
-package ru.nstu.javafx_labs_lipatov.objects;
+package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import javafx.scene.image.ImageView;
-import ru.nstu.javafx_labs_lipatov.IBehaviour;
 
 import java.io.FileNotFoundException;
 import java.util.UUID;
