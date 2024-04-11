@@ -1,18 +1,13 @@
 package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class HabitatController {
@@ -213,6 +208,7 @@ public class HabitatController {
     }
 
     public HabitatView getView() {
+
         return view;
     }
 

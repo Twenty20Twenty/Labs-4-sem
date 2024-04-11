@@ -28,4 +28,17 @@ public class FemaleStudent extends Student{
         imageView.setImage(image);
         countFemaleStudent++;
     }
+
+    @Override
+    public void paint(){
+        System.out.println("FemalePrint");
+        imageView.setX(getX());
+        imageView.setY(getY());
+    }
+
+    @Override
+    public void move(int X, int Y){
+        setX(X);
+        setY(Y);
+    }
 }

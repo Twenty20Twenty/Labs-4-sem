@@ -21,9 +21,23 @@ public class MaleStudent extends Student {
             e.printStackTrace();
         }
     }
+
     public MaleStudent(int _x, int _y) throws FileNotFoundException {
         super(_x,_y);
         imageView.setImage(image);
         countMaleStudent++;
+    }
+
+    @Override
+    public void paint(){
+        System.out.println("MalePrint");
+        imageView.setX(getX());
+        imageView.setY(getY());
+    }
+
+    @Override
+    public void move(int X, int Y){
+        setX(X);
+        setY(Y);
     }
 }

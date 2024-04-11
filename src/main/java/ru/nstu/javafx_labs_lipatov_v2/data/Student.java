@@ -9,7 +9,9 @@ import java.util.UUID;
 public abstract class Student implements IBehaviour {
     private int posX;
     private int posY;
-    final ImageView imageView;
+    public ImageView imageView;
+
+    public abstract void paint();
 
     public ImageView getImageView() {
         return imageView;
@@ -43,18 +45,19 @@ public abstract class Student implements IBehaviour {
         imageView.setPreserveRatio(true);
     }
 
+    @Override
     public int getX() {
         return posX;
     }
-
+    @Override
     public void setX(int posX) {
         this.posX = posX;
     }
-
+    @Override
     public int getY() {
         return posY;
     }
-
+    @Override
     public void setY(int posY) {
         this.posY = posY;
     }

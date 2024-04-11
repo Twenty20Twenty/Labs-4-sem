@@ -21,7 +21,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
         Parent root = fxmlLoader.load();
-
+        System.out.println();
         view = new HabitatView();
         view = fxmlLoader.getController();
         view.setComboBoxMap();

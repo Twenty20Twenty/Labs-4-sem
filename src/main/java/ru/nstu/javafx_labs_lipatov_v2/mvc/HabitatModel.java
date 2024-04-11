@@ -6,10 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.nstu.javafx_labs_lipatov_v2.AI.FemaleAI;
+import ru.nstu.javafx_labs_lipatov_v2.AI.MaleAI;
+import ru.nstu.javafx_labs_lipatov_v2.ModalWindow;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
+import ru.nstu.javafx_labs_lipatov_v2.data.Student;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
-import ru.nstu.javafx_labs_lipatov_v2.ModalWindow;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,6 +34,8 @@ public class HabitatModel {
     private boolean informationWindowFlag = true;
     public boolean timeFlag = true;
     HabitatView view;
+    MaleAI maleAI = new MaleAI();
+    FemaleAI femaleAI = new FemaleAI();
 
     public HabitatModel(double pMale, double pFemale, int timeMale, int timeFemale, HabitatView view) {
         this.pMale = pMale;
@@ -116,36 +121,50 @@ public class HabitatModel {
                 Platform.runLater(() -> {
                     updateTimer();
                     update(System.currentTimeMillis() - startTime);
+                    synchronized (StudentCollections.getInstance().linkedStudentList){
+                        for (Student stud: StudentCollections.getInstance().linkedStudentList){
+                            stud.paint();
+                        }
+                    }
                 });
 
             }
-        }, 0, 1000);
+        }, 0, 10);
     }
 
     public void update(long time) {
         if (startFlag) {
-            create(time / 1000);
-            StudentCollections.getInstance().updateCollections(time / 1000, view);
+            maleAI.run();
+            femaleAI.run();
+            create(time/1000);
+            StudentCollections.getInstance().updateCollections(time, view);
         }
     }
-
+    private long lastTimeM = -100;
+    private long lastTimeF = -100;
     private void create(long time) {
         Random random = new Random();
         float p = random.nextFloat();
         try {
-            if ((time % timeMale == 0) && (pMale <= p)) {
-                MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
-                view.getVisualPane().getChildren().add(student.getImageView());
-                StudentCollections.getInstance().linkedStudentList.add(student);
-                StudentCollections.getInstance().idHashSet.add(student.getId());
-                StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
+            if (time != lastTimeM) {
+                lastTimeM = time;
+                if ((time % timeMale == 0) && (pMale <= p)) {
+                    MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
+                    view.getVisualPane().getChildren().add(student.getImageView());
+                    StudentCollections.getInstance().linkedStudentList.add(student);
+                    StudentCollections.getInstance().idHashSet.add(student.getId());
+                    StudentCollections.getInstance().bornTreeMap.put(student.getId(), time * 1000);
+                }
             }
-            if ((time % timeFemale == 0) && (pFemale <= p)) {
-                FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
-                view.getVisualPane().getChildren().add(student.getImageView());
-                StudentCollections.getInstance().linkedStudentList.add(student);
-                StudentCollections.getInstance().idHashSet.add(student.getId());
-                StudentCollections.getInstance().bornTreeMap.put(student.getId(), time);
+            if (time != lastTimeF) {
+                lastTimeF = time;
+                if ((time % timeFemale == 0) && (pFemale <= p) ) {
+                    FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
+                    view.getVisualPane().getChildren().add(student.getImageView());
+                    StudentCollections.getInstance().linkedStudentList.add(student);
+                    StudentCollections.getInstance().idHashSet.add(student.getId());
+                    StudentCollections.getInstance().bornTreeMap.put(student.getId(), time * 1000);
+                }
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
