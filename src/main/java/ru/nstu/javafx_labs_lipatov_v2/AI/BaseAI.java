@@ -15,6 +15,7 @@ public abstract class BaseAI implements Runnable{
         isGoing = true;
         while (isGoing){
             synchronized (StudentCollections.getInstance().linkedStudentList){
+
                 nextStep();
             }
         }
