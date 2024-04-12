@@ -10,6 +10,7 @@ import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatController;
 import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatModel;
 import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView;
+import ru.nstu.javafx_labs_lipatov_v2.AI.*;
 
 import java.io.IOException;
 
@@ -42,7 +43,10 @@ public class Application extends javafx.application.Application {
                 if (model.isStartFlag())
                     model.getTimer().cancel();
                 StudentCollections.getInstance().clearCollections(view);
+                Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
                 stage.close();
+                model.maleAI.end();
+                model.femaleAI.end();
             }
         });
         stage.show();

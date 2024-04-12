@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.*?>
 <?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
 <SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
    <items>
       <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
@@ -85,6 +85,7 @@
                         <Font size="10.0" />
                      </font>
                   </TextField>
+                  <Button fx:id="maleAIButton" layoutX="99.0" layoutY="64.0" mnemonicParsing="false" text="ИИ Студент" />
                </children>
             </Pane>
             <Pane layoutX="300.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="290.0">
@@ -122,6 +123,7 @@
                         <Font size="10.0" />
                      </font>
                   </TextField>
+                  <Button fx:id="femaleAIButton" layoutX="99.0" layoutY="64.0" mnemonicParsing="false" text="ИИ Студентка" />
                </children>
             </Pane>
             <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" selected="true" text="Показывать информацию">

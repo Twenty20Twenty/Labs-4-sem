@@ -1,6 +1,5 @@
 package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
@@ -47,6 +46,8 @@ public class HabitatController {
             StudentCollections.getInstance().clearCollections(view);
             Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
             stage.close();
+            model.maleAI.end();
+            model.femaleAI.end();
         });
         view.getShowTimeMenuItem().setOnAction(event -> model.showTimer());
         view.getHideTimeMenuItem().setOnAction(event -> model.showTimer());
@@ -150,6 +151,20 @@ public class HabitatController {
         });
         view.getLiveObjButton().setOnAction(event -> model.pauseGeneration("liveObjWindow.fxml", "Текущие объекты"));
         view.getAutorsMenuItem().setOnAction(event -> model.autorsWindow());
+        view.getMaleAIButton().setOnAction(event -> {
+            if (model.maleAI.paused){
+                model.beginMaleAI();
+            } else{
+                model.pauseMaleAI();
+            }
+        });
+        view.getFemaleAIButton().setOnAction(event -> {
+            if (model.femaleAI.paused){
+                model.beginFemaleAI();
+            } else{
+                model.pauseFemaleAI();
+            }
+        });
     }
 
     private void startFunk() {
@@ -193,26 +208,5 @@ public class HabitatController {
         view.getFemaleLifeTimeTextField().setDisable(false);
         view.getStartMenuItem().setDisable(false);
         view.getStopMenuItem().setDisable(true);
-    }
-
-    void menuHideTimer(ActionEvent event) {
-        model.showTimer();
-        view.getShowTimeMenuItem().setDisable(false);
-        view.getHideTimeMenuItem().setDisable(true);
-    }
-
-    void menuShowTimer(ActionEvent event) {
-        model.showTimer();
-        view.getShowTimeMenuItem().setDisable(true);
-        view.getShowTimeMenuItem().setDisable(false);
-    }
-
-    public HabitatView getView() {
-
-        return view;
-    }
-
-    public HabitatModel getModel() {
-        return model;
     }
 }

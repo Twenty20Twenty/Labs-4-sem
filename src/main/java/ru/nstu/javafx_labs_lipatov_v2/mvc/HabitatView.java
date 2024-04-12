@@ -7,8 +7,8 @@ import javafx.scene.layout.Pane;
 import java.util.TreeMap;
 
 public class HabitatView {
-    private static int width = 600;
-    private static int height = 600;
+    private static int width = 800;
+    private static int height = 800;
 
     public HabitatView() {
 
@@ -64,6 +64,10 @@ public class HabitatView {
     private CheckBox informationCheckBox;
     @FXML
     private Button liveObjButton;
+    @FXML
+    private Button maleAIButton;
+    @FXML
+    private Button femaleAIButton;
 
     public void setComboBoxMap() {
         int procent = 0;
@@ -196,5 +200,13 @@ public class HabitatView {
 
     public SplitPane getSplitPane() {
         return splitPane;
+    }
+
+    public Button getMaleAIButton() {
+        return maleAIButton;
+    }
+
+    public Button getFemaleAIButton() {
+        return femaleAIButton;
     }
 }

@@ -10,14 +10,14 @@ public class FemaleAI extends BaseAI {
     }
 
     @Override
-    Boolean nextStep(){
+    void nextStep(){
         System.out.println(super.threadName);
+        synchronized (StudentCollections.getInstance().linkedStudentList){
             for (Student stud: StudentCollections.getInstance().linkedStudentList){
                 if (stud instanceof FemaleStudent){
-                    stud.move(stud.getX() + 1, stud.getY());
+                    stud.move();
                 }
             }
-            super.isGoing = false;
-        return true;
+        }
     }
 }

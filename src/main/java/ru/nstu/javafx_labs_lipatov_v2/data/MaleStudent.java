@@ -30,14 +30,13 @@ public class MaleStudent extends Student {
 
     @Override
     public void paint(){
-        System.out.println("MalePrint");
         imageView.setX(getX());
         imageView.setY(getY());
     }
 
     @Override
-    public void move(int X, int Y){
-        setX(X);
-        setY(Y);
+    public void move(){
+        setX(getX() - 1);
+        setY(getY());
     }
 }

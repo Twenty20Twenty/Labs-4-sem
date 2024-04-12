@@ -17,7 +17,7 @@ public class FemaleStudent extends Student{
 
     static {
         try{
-            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/FemaleStudent1.png"));
+            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/FemaleStudent.png"));
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -31,14 +31,13 @@ public class FemaleStudent extends Student{
 
     @Override
     public void paint(){
-        System.out.println("FemalePrint");
         imageView.setX(getX());
         imageView.setY(getY());
     }
 
     @Override
-    public void move(int X, int Y){
-        setX(X);
-        setY(Y);
+    public void move(){
+        setX(getX() + 1);
+        setY(getY());
     }
 }

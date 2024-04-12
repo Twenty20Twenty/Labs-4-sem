@@ -34,8 +34,8 @@ public class HabitatModel {
     private boolean informationWindowFlag = true;
     public boolean timeFlag = true;
     HabitatView view;
-    MaleAI maleAI = new MaleAI();
-    FemaleAI femaleAI = new FemaleAI();
+    public MaleAI maleAI = new MaleAI();
+    public FemaleAI femaleAI = new FemaleAI();
 
     public HabitatModel(double pMale, double pFemale, int timeMale, int timeFemale, HabitatView view) {
         this.pMale = pMale;
@@ -43,6 +43,8 @@ public class HabitatModel {
         this.timeMale = timeMale;
         this.timeFemale = timeFemale;
         this.view = view;
+        maleAI.start();
+        femaleAI.start();
     }
 
     public void startGeneration() {
@@ -54,6 +56,8 @@ public class HabitatModel {
         timer = new Timer();
         startTime = System.currentTimeMillis();
         secStart = startTime;
+        beginMaleAI();
+        beginFemaleAI();
         startWork();
     }
 
@@ -103,6 +107,10 @@ public class HabitatModel {
             timer.cancel();
             StudentCollections.getInstance().clearCollections(view);
         }
+        lastTimeM = -100;
+        lastTimeF = -100;
+        pauseMaleAI();
+        pauseFemaleAI();
     }
 
     private long secStart;
@@ -134,10 +142,10 @@ public class HabitatModel {
 
     public void update(long time) {
         if (startFlag) {
-            maleAI.run();
-            femaleAI.run();
-            create(time/1000);
-            StudentCollections.getInstance().updateCollections(time, view);
+            synchronized (StudentCollections.getInstance().linkedStudentList){
+                create(time/1000);
+                StudentCollections.getInstance().updateCollections(time, view);
+            }
         }
     }
     private long lastTimeM = -100;
@@ -229,6 +237,36 @@ public class HabitatModel {
         }
     }
 
+    public void pauseMaleAI(){
+        if (!maleAI.paused){
+            maleAI.paused = true;
+        }
+    }
+
+    public void beginMaleAI(){
+        if (maleAI.paused){
+            synchronized (maleAI.obj){
+                maleAI.paused = false;
+                maleAI.obj.notify();
+            }
+        }
+    }
+
+    public void pauseFemaleAI(){
+        if (!femaleAI.paused){
+            femaleAI.paused = true;
+        }
+    }
+
+    public void beginFemaleAI(){
+        if (femaleAI.paused){
+            synchronized (femaleAI.obj){
+                femaleAI.paused = false;
+                femaleAI.obj.notify();
+            }
+        }
+    }
+
     public boolean isStartFlag() {
         return startFlag;
     }
@@ -263,5 +301,17 @@ public class HabitatModel {
 
     public HabitatView getView() {
         return view;
+    }
+
+    public double getpMale() {
+        return pMale;
+    }
+
+    public MaleAI getMaleAI() {
+        return maleAI;
+    }
+
+    public FemaleAI getFemaleAI() {
+        return femaleAI;
     }
 }

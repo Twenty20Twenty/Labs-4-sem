@@ -10,7 +10,7 @@ import java.util.UUID;
 public class StudentCollections {
     private static StudentCollections instance;
 
-    public LinkedList<Student> linkedStudentList;
+    public final LinkedList<Student> linkedStudentList;
     public HashSet<UUID> idHashSet;
     public TreeMap<UUID, Long> bornTreeMap;
 
@@ -27,12 +27,11 @@ public class StudentCollections {
         return instance;
     }
 
-    public void updateCollections(Long time, HabitatView view) throws IndexOutOfBoundsException{
+    public synchronized void updateCollections(Long time, HabitatView view) throws IndexOutOfBoundsException{
         for (int i = 0; i < linkedStudentList.size(); i++) {
             Student current = linkedStudentList.get(i);
             Long curBornTime = bornTreeMap.get(current.getId());
             if (current instanceof MaleStudent) {
-                System.out.println(time - curBornTime);
                 if ((time - curBornTime) >= (MaleStudent.liveTime * 1000)){
                     view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
