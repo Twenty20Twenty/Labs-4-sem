@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
+<SplitPane fx:id="splitPane" dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
    <items>
       <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
          <children>
@@ -27,7 +27,7 @@
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="radioButtonHideTimer" layoutX="85.0" layoutY="123.0" mnemonicParsing="false" text="Скрывать время симуляции" toggleGroup="$tgTimer" />
-            <MenuBar prefHeight="25.0" prefWidth="600.0">
+            <MenuBar prefHeight="25.0" prefWidth="800.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Главное">
                   <items>
@@ -45,7 +45,8 @@
                 </Menu>
                   <Menu mnemonicParsing="false" text="Инфо">
                     <items>
-                      <MenuItem fx:id="autorsMenuItem" mnemonicParsing="false" text="Авторы" />
+                      <MenuItem fx:id="liveObjMenuItem" disable="true" mnemonicParsing="false" text="Текущие объекты" />
+                        <MenuItem fx:id="authorsMenuItem" mnemonicParsing="false" text="Авторы" />
                     </items>
                   </Menu>
               </menus>
@@ -131,11 +132,56 @@
                   <Font size="14.0" />
                </font></CheckBox>
             <Button fx:id="liveObjButton" disable="true" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
+            <ComboBox fx:id="priorityFemaleComboBox" layoutX="609.0" layoutY="164.0" prefHeight="25.0" prefWidth="170.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="0" />
+                     <String fx:value="1" />
+                     <String fx:value="2" />
+                     <String fx:value="3" />
+                     <String fx:value="4" />
+                     <String fx:value="5" />
+                     <String fx:value="6" />
+                     <String fx:value="7" />
+                     <String fx:value="8" />
+                     <String fx:value="9" />
+                     <String fx:value="10" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <Label layoutX="609.0" layoutY="96.0" text="Приоритет потока студента">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="609.0" layoutY="147.0" text="Приоритет потока студентки">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="priorityMaleComboBox" layoutX="609.0" layoutY="111.0" prefHeight="25.0" prefWidth="170.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="0" />
+                     <String fx:value="1" />
+                     <String fx:value="2" />
+                     <String fx:value="3" />
+                     <String fx:value="4" />
+                     <String fx:value="5" />
+                     <String fx:value="6" />
+                     <String fx:value="7" />
+                     <String fx:value="8" />
+                     <String fx:value="9" />
+                     <String fx:value="10" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+
          </children>
       </Pane>
       <Pane fx:id="visualizationPane" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
          <children>
-            <ImageView fitHeight="356.0" fitWidth="598.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@backdround_AVTF.jpg" />
                </image></ImageView>

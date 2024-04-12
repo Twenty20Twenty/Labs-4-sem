@@ -11,7 +11,7 @@ public class MaleAI extends BaseAI {
 
     @Override
     void nextStep(){
-        System.out.println(super.threadName);
+        //System.out.println(super.threadName);
         synchronized (StudentCollections.getInstance().linkedStudentList){
             for (Student stud: StudentCollections.getInstance().linkedStudentList){
                 if (stud instanceof MaleStudent){

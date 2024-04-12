@@ -28,7 +28,9 @@ public class HabitatView {
     @FXML
     public MenuItem showInformationMenuItem;
     @FXML
-    public MenuItem autorsMenuItem;
+    public MenuItem authorsMenuItem;
+    @FXML
+    private MenuItem liveObjMenuItem;
     private TreeMap<String, Float> comboBoxMap = new TreeMap<>();
     @FXML
     private Pane visualizationPane;
@@ -57,6 +59,10 @@ public class HabitatView {
     @FXML
     private ComboBox femaleSpawnProbability;
     @FXML
+    private ComboBox priorityMaleComboBox;
+    @FXML
+    private ComboBox priorityFemaleComboBox;
+    @FXML
     private Button applyMaleProp;
     @FXML
     private Button applyFemaleProp;
@@ -68,6 +74,7 @@ public class HabitatView {
     private Button maleAIButton;
     @FXML
     private Button femaleAIButton;
+
 
     public void setComboBoxMap() {
         int procent = 0;
@@ -84,10 +91,12 @@ public class HabitatView {
         maleSpawnTimeTextField.setText("2");
         maleSpawnProbability.getSelectionModel().select("50 %");
         maleLifeTimeTextField.setText("4");
+        priorityMaleComboBox.getSelectionModel().select("5");
 
         femaleSpawnTimeTextField.setText("3");
         femaleSpawnProbability.getSelectionModel().select("80 %");
         femaleLifeTimeTextField.setText("5");
+        priorityFemaleComboBox.getSelectionModel().select("5");
     }
 
     public Button getButtonStop() {
@@ -190,8 +199,12 @@ public class HabitatView {
         return hideTimeMenuItem;
     }
 
-    public MenuItem getAutorsMenuItem() {
-        return autorsMenuItem;
+    public MenuItem getAuthorsMenuItem() {
+        return authorsMenuItem;
+    }
+
+    public MenuItem getLiveObjMenuItem() {
+        return liveObjMenuItem;
     }
 
     public TreeMap<String, Float> getComboBoxMap() {
@@ -209,4 +222,14 @@ public class HabitatView {
     public Button getFemaleAIButton() {
         return femaleAIButton;
     }
+
+    public ComboBox getPriorityMaleComboBox() {
+        return priorityMaleComboBox;
+    }
+
+    public ComboBox getPriorityFemaleComboBox() {
+        return priorityFemaleComboBox;
+    }
+
+
 }

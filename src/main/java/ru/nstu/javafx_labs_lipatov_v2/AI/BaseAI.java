@@ -12,7 +12,7 @@ public abstract class BaseAI extends Thread{
 
     public Boolean paused = Boolean.TRUE;
 
-    private boolean flagEnd = false;
+    public boolean flagEnd = false;
     public void end(){
         flagEnd = true;
     }
@@ -32,6 +32,7 @@ public abstract class BaseAI extends Thread{
             }
             try{
                 if (flagEnd){
+                    this.interrupt();
                     break;
                 }
                 this.sleep(10);

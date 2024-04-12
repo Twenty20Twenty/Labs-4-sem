@@ -9,6 +9,9 @@ public class FemaleStudent extends Student{
     public static int countFemaleStudent = 0;
     public static Image image;
     public static int liveTime = 5;
+    private double angle = 0.1;
+    public double speed = 10;
+    public double radius = 4;
 
 
     public static void setLiveTime(int liveTime) {
@@ -37,7 +40,19 @@ public class FemaleStudent extends Student{
 
     @Override
     public void move(){
-        setX(getX() + 1);
-        setY(getY());
+        double newX = this.getX() + (radius * Math.cos(this.getAngle()));
+        double newY = this.getY() + (radius * Math.sin(this.getAngle()));
+        this.setAngle(this.getAngle() + speed / 100);
+
+        setX(newX);
+        setY(newY);
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
     }
 }

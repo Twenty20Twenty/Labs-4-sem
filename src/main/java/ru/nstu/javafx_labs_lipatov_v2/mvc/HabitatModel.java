@@ -157,7 +157,7 @@ public class HabitatModel {
             if (time != lastTimeM) {
                 lastTimeM = time;
                 if ((time % timeMale == 0) && (pMale <= p)) {
-                    MaleStudent student = new MaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
+                    MaleStudent student = new MaleStudent(random.nextInt(10, 750), random.nextInt(25, 430));
                     view.getVisualPane().getChildren().add(student.getImageView());
                     StudentCollections.getInstance().linkedStudentList.add(student);
                     StudentCollections.getInstance().idHashSet.add(student.getId());
@@ -167,7 +167,7 @@ public class HabitatModel {
             if (time != lastTimeF) {
                 lastTimeF = time;
                 if ((time % timeFemale == 0) && (pFemale <= p) ) {
-                    FemaleStudent student = new FemaleStudent(random.nextInt(10, 550), random.nextInt(35, 300 - 50));
+                    FemaleStudent student = new FemaleStudent(random.nextInt(10, 750), random.nextInt(25, 430));
                     view.getVisualPane().getChildren().add(student.getImageView());
                     StudentCollections.getInstance().linkedStudentList.add(student);
                     StudentCollections.getInstance().idHashSet.add(student.getId());
@@ -217,9 +217,9 @@ public class HabitatModel {
         }
     }
 
-    public void autorsWindow(){
+    public void authorsWindow(){
         try {
-            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource("autorsWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource("authorsWindow.fxml"));
             Parent root = loader.load();
             ModalWindow modalWindow = new ModalWindow();
             ModalWindow modalController = loader.getController();
@@ -247,6 +247,7 @@ public class HabitatModel {
         if (maleAI.paused){
             synchronized (maleAI.obj){
                 maleAI.paused = false;
+                maleAI.flagEnd = false;
                 maleAI.obj.notify();
             }
         }
@@ -262,6 +263,7 @@ public class HabitatModel {
         if (femaleAI.paused){
             synchronized (femaleAI.obj){
                 femaleAI.paused = false;
+                femaleAI.flagEnd = false;
                 femaleAI.obj.notify();
             }
         }

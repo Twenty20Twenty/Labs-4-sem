@@ -40,11 +40,18 @@ public class Application extends javafx.application.Application {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if (model.isStartFlag())
+                if (model.isStartFlag()){
                     model.getTimer().cancel();
+                }
                 StudentCollections.getInstance().clearCollections(view);
                 Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
                 stage.close();
+
+                if (model.maleAI.paused)
+                    model.maleAI.interrupt();
+                if (model.femaleAI.paused)
+                    model.femaleAI.interrupt();
+
                 model.maleAI.end();
                 model.femaleAI.end();
             }

@@ -10,8 +10,8 @@ import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 import java.util.Map;
 
 public class HabitatController {
-    private HabitatView view;
-    private HabitatModel model;
+    private final HabitatView view;
+    private final HabitatModel model;
 
     public HabitatController(HabitatView view, HabitatModel model) {
         this.view = view;
@@ -34,23 +34,40 @@ public class HabitatController {
                     break;
             }
         });
+
         view.getButtonStart().setOnAction(event -> startFunk());
+
         view.getButtonStop().setOnAction(event -> stopFunk());
+
         view.getRadioButtonHideTimer().setOnAction(event -> model.showTimer());
+
         view.getRadioButtonShowTimer().setOnAction(event -> model.showTimer());
+
         view.getStartMenuItem().setOnAction(event -> startFunk());
+
         view.getStopMenuItem().setOnAction(event -> stopFunk());
+
         view.getExitMenuItem().setOnAction(event -> {
-            if (model.isStartFlag())
+            if (model.isStartFlag()){
                 model.getTimer().cancel();
+            }
             StudentCollections.getInstance().clearCollections(view);
             Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
             stage.close();
+
+            if (model.maleAI.paused)
+                model.maleAI.interrupt();
+            if (model.femaleAI.paused)
+                model.femaleAI.interrupt();
+
             model.maleAI.end();
             model.femaleAI.end();
         });
+
         view.getShowTimeMenuItem().setOnAction(event -> model.showTimer());
+
         view.getHideTimeMenuItem().setOnAction(event -> model.showTimer());
+
         view.getShowInformationMenuItem().setOnAction(event -> {
             if (model.isInformationWindowFlag()) {
                 view.getInformationCheckBox().setSelected(false);
@@ -60,6 +77,11 @@ public class HabitatController {
                 model.setInformationWindowFlag(true);
             }
         });
+
+        view.getAuthorsMenuItem().setOnAction(event -> model.authorsWindow());
+
+        view.getLiveObjMenuItem().setOnAction(event -> model.pauseGeneration("liveObjWindow.fxml", "Текущие объекты"));
+
         view.getApplyFemaleProp().setOnAction(event -> {
             String userChoiseP = (String) view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem();
             if (userChoiseP == null)
@@ -101,6 +123,7 @@ public class HabitatController {
                 alert.showAndWait();
             }
         });
+
         view.getApplyMaleProp().setOnAction(event -> {
             String userChoiseP = (String) view.getMaleSpawnProbabilityBox().getSelectionModel().getSelectedItem();
             if (userChoiseP == null)
@@ -142,15 +165,11 @@ public class HabitatController {
                 alert.showAndWait();
             }
         });
-        view.getInformationCheckBox().setOnAction(event -> {
-            if (view.getInformationCheckBox().isSelected()) {
-                model.setInformationWindowFlag(true);
-            } else {
-                model.setInformationWindowFlag(false);
-            }
-        });
+
+        view.getInformationCheckBox().setOnAction(event -> model.setInformationWindowFlag(view.getInformationCheckBox().isSelected()));
+
         view.getLiveObjButton().setOnAction(event -> model.pauseGeneration("liveObjWindow.fxml", "Текущие объекты"));
-        view.getAutorsMenuItem().setOnAction(event -> model.autorsWindow());
+
         view.getMaleAIButton().setOnAction(event -> {
             if (model.maleAI.paused){
                 model.beginMaleAI();
@@ -158,12 +177,23 @@ public class HabitatController {
                 model.pauseMaleAI();
             }
         });
+
         view.getFemaleAIButton().setOnAction(event -> {
             if (model.femaleAI.paused){
                 model.beginFemaleAI();
             } else{
                 model.pauseFemaleAI();
             }
+        });
+
+        view.getPriorityMaleComboBox().setOnAction(event -> {
+            model.maleAI.setPriority(Integer.parseInt((String.valueOf(view.getPriorityMaleComboBox().getValue()))));
+            System.out.println("maleAI priority is: " + model.maleAI.getPriority());
+        });
+
+        view.getPriorityFemaleComboBox().setOnAction(event -> {
+            model.femaleAI.setPriority(Integer.parseInt((String.valueOf(view.getPriorityFemaleComboBox().getValue()))));
+            System.out.println("femaleAI priority is: " + model.femaleAI.getPriority());
         });
     }
 
@@ -180,6 +210,7 @@ public class HabitatController {
         view.getMaleLifeTimeTextField().setDisable(true);
         view.getFemaleLifeTimeTextField().setDisable(true);
         view.getLiveObjButton().setDisable(false);
+        view.getLiveObjMenuItem().setDisable(false);
         view.getStartMenuItem().setDisable(true);
         view.getStopMenuItem().setDisable(false);
     }
@@ -196,6 +227,7 @@ public class HabitatController {
                 view.getButtonStart().setDisable(false);
                 view.getButtonStop().setDisable(true);
                 view.getLiveObjButton().setDisable(true);
+                view.getLiveObjMenuItem().setDisable(true);
             }
         }
         view.getApplyMaleProp().setDisable(false);

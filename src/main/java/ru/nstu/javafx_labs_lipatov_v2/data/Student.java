@@ -7,8 +7,8 @@ import java.util.UUID;
 
 
 public abstract class Student implements IBehaviour {
-    private int posX;
-    private int posY;
+    private double posX;
+    private double posY;
     public ImageView imageView;
 
     public abstract void paint();
@@ -40,25 +40,25 @@ public abstract class Student implements IBehaviour {
         imageView = new ImageView();
         imageView.setX(posX);
         imageView.setY(posY);
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setFitHeight(140);
+        imageView.setFitWidth(140);
         imageView.setPreserveRatio(true);
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return posX;
     }
     @Override
-    public void setX(int posX) {
+    public void setX(double posX) {
         this.posX = posX;
     }
     @Override
-    public int getY() {
+    public double getY() {
         return posY;
     }
     @Override
-    public void setY(int posY) {
+    public void setY(double posY) {
         this.posY = posY;
     }
 }
