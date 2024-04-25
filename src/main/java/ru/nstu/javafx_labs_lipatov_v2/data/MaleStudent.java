@@ -9,12 +9,12 @@ import java.util.Random;
 public class MaleStudent extends Student {
     public static int countMaleStudent = 0;
     public static Image image;
-    public static int liveTime = 4;
+    public static int lifeTime = 4;
     public double speed = 1;
     private long time;
 
-    public static void setLiveTime(int liveTime) {
-        MaleStudent.liveTime = liveTime;
+    public static void setLifeTime(int lifeTime) {
+        MaleStudent.lifeTime = lifeTime;
     }
 
     static {

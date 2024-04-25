@@ -26,8 +26,7 @@ public class Application extends javafx.application.Application {
         view = new HabitatView();
         view = fxmlLoader.getController();
         view.setComboBoxMap();
-        view.setDefaultSettings();
-        model = new HabitatModel(0.5, 0.2, 2, 3, view);
+        model = new HabitatModel(view);
         controller = new HabitatController(view, model);
 
         Scene scene = new Scene(root, view.getWidth(), view.getHeight());
@@ -54,6 +53,8 @@ public class Application extends javafx.application.Application {
 
                 model.maleAI.end();
                 model.femaleAI.end();
+
+                controller.saveProperties();
             }
         });
         stage.show();

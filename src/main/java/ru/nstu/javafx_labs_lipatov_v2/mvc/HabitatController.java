@@ -7,19 +7,108 @@ import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 
+import java.io.*;
 import java.util.Map;
+import java.util.Properties;
 
 public class HabitatController {
     private final HabitatView view;
     private final HabitatModel model;
+    private Properties properties;
+
+    Properties defaultProperties(){
+        Properties prop = new Properties();
+        prop.setProperty("spawnMale", "2");
+        prop.setProperty("lifeMale", "4");
+        prop.setProperty("probobalityMale", "50");
+        prop.setProperty("priorityMale", "5");
+
+        prop.setProperty("spawnFemale", "3");
+        prop.setProperty("lifeFemale", "5");
+        prop.setProperty("probobalityFemale", "80");
+        prop.setProperty("priorityFemale", "5");
+        return prop;
+    }
 
     public HabitatController(HabitatView view, HabitatModel model) {
         this.view = view;
         this.model = model;
+        properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")));
+        } catch (FileNotFoundException e) {
+            try {
+                defaultProperties().store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")), "Config");
+                properties = defaultProperties();
+            } catch (IOException e1){
+                e1.printStackTrace();
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         init();
     }
 
+    void setProperties(Properties properties){
+        model.setMaleStudentN(Integer.parseInt(properties.getProperty("spawnMale")));
+        view.getMaleSpawnTimeTextField().setText(String.valueOf(model.getTimeMale()));
+
+        model.setFemaleStudentN(Integer.parseInt(properties.getProperty("spawnFemale")));
+        view.getFemaleSpawnTimeTextField().setText(String.valueOf(model.getTimeFemale()));
+
+        MaleStudent.lifeTime = Integer.parseInt(properties.getProperty("lifeMale"));
+        view.getMaleLifeTimeTextField().setText(String.valueOf(MaleStudent.lifeTime));
+
+        FemaleStudent.lifeTime = Integer.parseInt(properties.getProperty("lifeFemale"));
+        view.getFemaleLifeTimeTextField().setText(String.valueOf(FemaleStudent.lifeTime));
+
+        model.setMaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityMale"))/100);
+        view.getMaleSpawnProbabilityBox().getSelectionModel().select(String.valueOf(properties.getProperty("probobalityMale")) + " %");
+
+        model.setFemaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityFemale"))/100);
+        view.getFemaleSpawnProbabilityBox().getSelectionModel().select(String.valueOf(properties.getProperty("probobalityFemale")) + " %");
+
+        view.getPriorityMaleComboBox().getSelectionModel().select(properties.getProperty("priorityMale"));
+        model.maleAI.setPriority(Integer.parseInt(properties.getProperty("priorityMale")));
+
+        view.getPriorityFemaleComboBox().getSelectionModel().select(properties.getProperty("priorityFemale"));
+        model.femaleAI.setPriority(Integer.parseInt(properties.getProperty("priorityFemale")));
+
+        /*
+        maleSpawnTimeTextField.setText("2");
+        maleSpawnProbability.getSelectionModel().select("50 %");
+        maleLifeTimeTextField.setText("4");
+        priorityMaleComboBox.getSelectionModel().select("5");
+
+        femaleSpawnTimeTextField.setText("3");
+        femaleSpawnProbability.getSelectionModel().select("80 %");
+        femaleLifeTimeTextField.setText("5");
+        priorityFemaleComboBox.getSelectionModel().select("5");
+        */
+    }
+
+    public void saveProperties(){
+        properties.setProperty("spawnMale", view.getMaleSpawnTimeTextField().getText());
+        properties.setProperty("spawnFemale", view.getFemaleSpawnTimeTextField().getText());
+        properties.setProperty("lifeMale", view.getMaleLifeTimeTextField().getText());
+        properties.setProperty("lifeFemale", view.getFemaleLifeTimeTextField().getText());
+
+        properties.setProperty("priorityMale", (String) view.getPriorityMaleComboBox().getSelectionModel().getSelectedItem());
+        properties.setProperty("priorityFemale", (String) view.getPriorityFemaleComboBox().getSelectionModel().getSelectedItem());
+
+        properties.setProperty("probobalityMale", String.valueOf(view.getMaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
+        properties.setProperty("probobalityFemale", String.valueOf(view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
+
+        try {
+            properties.store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")),"Config");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
     private void init() {
+        setProperties(properties);
+
         view.getSplitPane().setOnKeyPressed(keyEvent -> {
             keyEvent.consume();
             switch (keyEvent.getCode()) {
@@ -62,6 +151,8 @@ public class HabitatController {
 
             model.maleAI.end();
             model.femaleAI.end();
+
+            saveProperties();
         });
 
         view.getShowTimeMenuItem().setOnAction(event -> model.showTimer());
@@ -157,9 +248,9 @@ public class HabitatController {
                 if (n < 0) {
                     throw new NumberFormatException();
                 }
-                MaleStudent.setLiveTime(n);
+                MaleStudent.setLifeTime(n);
             } catch (NumberFormatException e) {
-                MaleStudent.setLiveTime(4);
+                MaleStudent.setLifeTime(4);
                 view.getMaleLifeTimeTextField().setText("4");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Некорректный ввод ВРЕМЕНИ ЖИЗНИ студента. Разрешено вводить только целые положительные числа", ButtonType.OK);
                 alert.showAndWait();

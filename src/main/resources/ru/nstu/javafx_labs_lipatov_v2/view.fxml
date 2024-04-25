@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
+<SplitPane fx:id="splitPane" dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="false" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
    <items>
       <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
          <children>
@@ -131,7 +131,7 @@
                <font>
                   <Font size="14.0" />
                </font></CheckBox>
-            <Button fx:id="liveObjButton" disable="true" layoutX="9.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
+            <Button fx:id="liveObjButton" disable="true" layoutX="631.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
             <ComboBox fx:id="priorityFemaleComboBox" layoutX="609.0" layoutY="164.0" prefHeight="25.0" prefWidth="170.0">
                <items>
                   <FXCollections fx:factory="observableArrayList">
@@ -176,6 +176,9 @@
                   </FXCollections>
                </items>
             </ComboBox>
+            <Button layoutX="2.0" layoutY="152.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Сохранить" />
+            <Button layoutX="2.0" layoutY="185.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Загрузить" />
+            <Button layoutX="704.0" layoutY="197.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Консоль" />
 
          </children>
       </Pane>

@@ -8,14 +8,14 @@ import java.io.FileNotFoundException;
 public class FemaleStudent extends Student{
     public static int countFemaleStudent = 0;
     public static Image image;
-    public static int liveTime = 5;
+    public static int lifeTime = 5;
     private double angle = 0.1;
     public double speed = 10;
     public double radius = 4;
 
 
     public static void setLiveTime(int liveTime) {
-        FemaleStudent.liveTime = liveTime;
+        FemaleStudent.lifeTime = liveTime;
     }
 
     static {

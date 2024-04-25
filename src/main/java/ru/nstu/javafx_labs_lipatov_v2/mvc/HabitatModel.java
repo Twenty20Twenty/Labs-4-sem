@@ -37,11 +37,7 @@ public class HabitatModel {
     public MaleAI maleAI = new MaleAI();
     public FemaleAI femaleAI = new FemaleAI();
 
-    public HabitatModel(double pMale, double pFemale, int timeMale, int timeFemale, HabitatView view) {
-        this.pMale = pMale;
-        this.pFemale = pFemale;
-        this.timeMale = timeMale;
-        this.timeFemale = timeFemale;
+    public HabitatModel(HabitatView view) {
         this.view = view;
         maleAI.start();
         femaleAI.start();
@@ -62,6 +58,8 @@ public class HabitatModel {
     }
 
     public void pauseGeneration(String fxmlLoader, String title) {
+        pauseMaleAI();
+        pauseFemaleAI();
         pauseTime = System.currentTimeMillis();
         timer.cancel();
         String text = new String();
@@ -98,6 +96,8 @@ public class HabitatModel {
         timer = new Timer();
         startTime += (System.currentTimeMillis() - pauseTime);
         secStart += (System.currentTimeMillis() - pauseTime);
+        beginMaleAI();
+        beginFemaleAI();
         startWork();
     }
 
@@ -305,15 +305,19 @@ public class HabitatModel {
         return view;
     }
 
-    public double getpMale() {
-        return pMale;
-    }
-
     public MaleAI getMaleAI() {
         return maleAI;
     }
 
     public FemaleAI getFemaleAI() {
         return femaleAI;
+    }
+
+    public int getTimeMale() {
+        return timeMale;
+    }
+
+    public int getTimeFemale() {
+        return timeFemale;
     }
 }

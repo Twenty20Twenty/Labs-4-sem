@@ -32,14 +32,14 @@ public class StudentCollections {
             Student current = linkedStudentList.get(i);
             Long curBornTime = bornTreeMap.get(current.getId());
             if (current instanceof MaleStudent) {
-                if ((time - curBornTime) >= (MaleStudent.liveTime * 1000)){
+                if ((time - curBornTime) >= (MaleStudent.lifeTime * 1000)){
                     view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());
                     linkedStudentList.remove(i);
                 }
             } else {
-                if ((time - curBornTime) >= (FemaleStudent.liveTime * 1000)){
+                if ((time - curBornTime) >= (FemaleStudent.lifeTime * 1000)){
                     view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());

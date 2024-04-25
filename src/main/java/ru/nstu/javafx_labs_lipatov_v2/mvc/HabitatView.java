@@ -87,18 +87,6 @@ public class HabitatView {
         }
     }
 
-    public void setDefaultSettings() {
-        maleSpawnTimeTextField.setText("2");
-        maleSpawnProbability.getSelectionModel().select("50 %");
-        maleLifeTimeTextField.setText("4");
-        priorityMaleComboBox.getSelectionModel().select("5");
-
-        femaleSpawnTimeTextField.setText("3");
-        femaleSpawnProbability.getSelectionModel().select("80 %");
-        femaleLifeTimeTextField.setText("5");
-        priorityFemaleComboBox.getSelectionModel().select("5");
-    }
-
     public Button getButtonStop() {
         return buttonStop;
     }
