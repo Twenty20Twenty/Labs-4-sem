@@ -1,8 +1,13 @@
 package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.nstu.javafx_labs_lipatov_v2.UserConsole;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
@@ -16,7 +21,7 @@ public class HabitatController {
     private final HabitatModel model;
     private Properties properties;
 
-    Properties defaultProperties(){
+    Properties defaultProperties() {
         Properties prop = new Properties();
         prop.setProperty("spawnMale", "2");
         prop.setProperty("lifeMale", "4");
@@ -40,16 +45,16 @@ public class HabitatController {
             try {
                 defaultProperties().store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")), "Config");
                 properties = defaultProperties();
-            } catch (IOException e1){
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         init();
     }
 
-    void setProperties(Properties properties){
+    void setProperties(Properties properties) {
         model.setMaleStudentN(Integer.parseInt(properties.getProperty("spawnMale")));
         view.getMaleSpawnTimeTextField().setText(String.valueOf(model.getTimeMale()));
 
@@ -62,10 +67,10 @@ public class HabitatController {
         FemaleStudent.lifeTime = Integer.parseInt(properties.getProperty("lifeFemale"));
         view.getFemaleLifeTimeTextField().setText(String.valueOf(FemaleStudent.lifeTime));
 
-        model.setMaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityMale"))/100);
+        model.setMaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityMale")) / 100);
         view.getMaleSpawnProbabilityBox().getSelectionModel().select(String.valueOf(properties.getProperty("probobalityMale")) + " %");
 
-        model.setFemaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityFemale"))/100);
+        model.setFemaleStudentP(1 - Integer.parseInt(properties.getProperty("probobalityFemale")) / 100);
         view.getFemaleSpawnProbabilityBox().getSelectionModel().select(String.valueOf(properties.getProperty("probobalityFemale")) + " %");
 
         view.getPriorityMaleComboBox().getSelectionModel().select(properties.getProperty("priorityMale"));
@@ -87,7 +92,7 @@ public class HabitatController {
         */
     }
 
-    public void saveProperties(){
+    public void saveProperties() {
         properties.setProperty("spawnMale", view.getMaleSpawnTimeTextField().getText());
         properties.setProperty("spawnFemale", view.getFemaleSpawnTimeTextField().getText());
         properties.setProperty("lifeMale", view.getMaleLifeTimeTextField().getText());
@@ -100,7 +105,7 @@ public class HabitatController {
         properties.setProperty("probobalityFemale", String.valueOf(view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
 
         try {
-            properties.store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")),"Config");
+            properties.store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")), "Config");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -137,7 +142,7 @@ public class HabitatController {
         view.getStopMenuItem().setOnAction(event -> stopFunk());
 
         view.getExitMenuItem().setOnAction(event -> {
-            if (model.isStartFlag()){
+            if (model.isStartFlag()) {
                 model.getTimer().cancel();
             }
             StudentCollections.getInstance().clearCollections(view);
@@ -262,17 +267,17 @@ public class HabitatController {
         view.getLiveObjButton().setOnAction(event -> model.pauseGeneration("liveObjWindow.fxml", "Текущие объекты"));
 
         view.getMaleAIButton().setOnAction(event -> {
-            if (model.maleAI.paused){
+            if (model.maleAI.paused) {
                 model.beginMaleAI();
-            } else{
+            } else {
                 model.pauseMaleAI();
             }
         });
 
         view.getFemaleAIButton().setOnAction(event -> {
-            if (model.femaleAI.paused){
+            if (model.femaleAI.paused) {
                 model.beginFemaleAI();
-            } else{
+            } else {
                 model.pauseFemaleAI();
             }
         });
@@ -285,6 +290,27 @@ public class HabitatController {
         view.getPriorityFemaleComboBox().setOnAction(event -> {
             model.femaleAI.setPriority(Integer.parseInt((String.valueOf(view.getPriorityFemaleComboBox().getValue()))));
             System.out.println("femaleAI priority is: " + model.femaleAI.getPriority());
+        });
+
+        view.getButtonConsole().setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(UserConsole.class.getResource("console.fxml"));
+                Parent root = loader.load();
+                UserConsole console = loader.getController();
+                console.parentModel = model;
+                Stage stage = new Stage();
+                stage.initModality(Modality.WINDOW_MODAL);
+                Scene scene = new Scene(root);
+                console.getConsoleText().setText(">> ");
+                console.getConsoleText().end();
+                stage.setScene(scene);
+                stage.setMaximized(false);
+                stage.setResizable(false);
+                stage.setTitle("Консоль");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

@@ -18,6 +18,7 @@ public class Application extends javafx.application.Application {
     HabitatView view;
     HabitatModel model;
     HabitatController controller;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
@@ -39,7 +40,7 @@ public class Application extends javafx.application.Application {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if (model.isStartFlag()){
+                if (model.isStartFlag()) {
                     model.getTimer().cancel();
                 }
                 StudentCollections.getInstance().clearCollections(view);

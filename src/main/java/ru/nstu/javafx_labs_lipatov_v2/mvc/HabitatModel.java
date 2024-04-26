@@ -74,7 +74,6 @@ public class HabitatModel {
         try {
             FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource(fxmlLoader));
             Parent root = loader.load();
-            ModalWindow modalWindow = new ModalWindow();
             ModalWindow modalController = loader.getController();
             modalController.model = this;
             modalController.setText(text);
@@ -129,8 +128,8 @@ public class HabitatModel {
                 Platform.runLater(() -> {
                     updateTimer();
                     update(System.currentTimeMillis() - startTime);
-                    synchronized (StudentCollections.getInstance().linkedStudentList){
-                        for (Student stud: StudentCollections.getInstance().linkedStudentList){
+                    synchronized (StudentCollections.getInstance().linkedStudentList) {
+                        for (Student stud : StudentCollections.getInstance().linkedStudentList) {
                             stud.paint();
                         }
                     }
@@ -142,14 +141,16 @@ public class HabitatModel {
 
     public void update(long time) {
         if (startFlag) {
-            synchronized (StudentCollections.getInstance().linkedStudentList){
-                create(time/1000);
+            synchronized (StudentCollections.getInstance().linkedStudentList) {
+                create(time / 1000);
                 StudentCollections.getInstance().updateCollections(time, view);
             }
         }
     }
+
     private long lastTimeM = -100;
     private long lastTimeF = -100;
+
     private void create(long time) {
         Random random = new Random();
         float p = random.nextFloat();
@@ -166,7 +167,7 @@ public class HabitatModel {
             }
             if (time != lastTimeF) {
                 lastTimeF = time;
-                if ((time % timeFemale == 0) && (pFemale <= p) ) {
+                if ((time % timeFemale == 0) && (pFemale <= p)) {
                     FemaleStudent student = new FemaleStudent(random.nextInt(10, 750), random.nextInt(25, 430));
                     view.getVisualPane().getChildren().add(student.getImageView());
                     StudentCollections.getInstance().linkedStudentList.add(student);
@@ -217,7 +218,7 @@ public class HabitatModel {
         }
     }
 
-    public void authorsWindow(){
+    public void authorsWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource("authorsWindow.fxml"));
             Parent root = loader.load();
@@ -237,15 +238,15 @@ public class HabitatModel {
         }
     }
 
-    public void pauseMaleAI(){
-        if (!maleAI.paused){
+    public void pauseMaleAI() {
+        if (!maleAI.paused) {
             maleAI.paused = true;
         }
     }
 
-    public void beginMaleAI(){
-        if (maleAI.paused){
-            synchronized (maleAI.obj){
+    public void beginMaleAI() {
+        if (maleAI.paused) {
+            synchronized (maleAI.obj) {
                 maleAI.paused = false;
                 maleAI.flagEnd = false;
                 maleAI.obj.notify();
@@ -253,15 +254,15 @@ public class HabitatModel {
         }
     }
 
-    public void pauseFemaleAI(){
-        if (!femaleAI.paused){
+    public void pauseFemaleAI() {
+        if (!femaleAI.paused) {
             femaleAI.paused = true;
         }
     }
 
-    public void beginFemaleAI(){
-        if (femaleAI.paused){
-            synchronized (femaleAI.obj){
+    public void beginFemaleAI() {
+        if (femaleAI.paused) {
+            synchronized (femaleAI.obj) {
                 femaleAI.paused = false;
                 femaleAI.flagEnd = false;
                 femaleAI.obj.notify();

@@ -13,6 +13,7 @@ public class HabitatView {
     public HabitatView() {
 
     }
+
     @FXML
     public SplitPane splitPane;
     @FXML
@@ -74,6 +75,8 @@ public class HabitatView {
     private Button maleAIButton;
     @FXML
     private Button femaleAIButton;
+    @FXML
+    private Button buttonConsole;
 
 
     public void setComboBoxMap() {
@@ -219,5 +222,7 @@ public class HabitatView {
         return priorityFemaleComboBox;
     }
 
-
+    public Button getButtonConsole() {
+        return buttonConsole;
+    }
 }
