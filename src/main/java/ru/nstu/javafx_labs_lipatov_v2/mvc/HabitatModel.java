@@ -44,8 +44,6 @@ public class HabitatModel {
     }
 
     public void startGeneration() {
-        MaleStudent.countMaleStudent = 0;
-        FemaleStudent.countFemaleStudent = 0;
         startFlag = true;
         seconds = -1;
         minutes = 0;
@@ -106,6 +104,8 @@ public class HabitatModel {
             timer.cancel();
             StudentCollections.getInstance().clearCollections(view);
         }
+        MaleStudent.countMaleStudent = 0;
+        FemaleStudent.countFemaleStudent = 0;
         lastTimeM = -100;
         lastTimeF = -100;
         pauseMaleAI();

@@ -76,7 +76,11 @@ public class HabitatView {
     @FXML
     private Button femaleAIButton;
     @FXML
-    private Button buttonConsole;
+    private Button consoleButton;
+    @FXML
+    private Button saveObjectsButton;
+    @FXML
+    private Button loadObjectsButton;
 
 
     public void setComboBoxMap() {
@@ -221,8 +225,15 @@ public class HabitatView {
     public ComboBox getPriorityFemaleComboBox() {
         return priorityFemaleComboBox;
     }
+    public Button getConsoleButton() {
+        return consoleButton;
+    }
 
-    public Button getButtonConsole() {
-        return buttonConsole;
+    public Button getSaveObjectsButton() {
+        return saveObjectsButton;
+    }
+
+    public Button getLoadObjectsButton() {
+        return loadObjectsButton;
     }
 }

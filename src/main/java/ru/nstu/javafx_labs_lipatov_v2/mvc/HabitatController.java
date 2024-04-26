@@ -1,20 +1,22 @@
 package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.UserConsole;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
+import ru.nstu.javafx_labs_lipatov_v2.data.Student;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 
 import java.io.*;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class HabitatController {
     private final HabitatView view;
@@ -292,7 +294,7 @@ public class HabitatController {
             System.out.println("femaleAI priority is: " + model.femaleAI.getPriority());
         });
 
-        view.getButtonConsole().setOnAction(event -> {
+        view.getConsoleButton().setOnAction(event -> {
             try {
                 FXMLLoader loader = new FXMLLoader(UserConsole.class.getResource("console.fxml"));
                 Parent root = loader.load();
@@ -312,7 +314,96 @@ public class HabitatController {
                 e.printStackTrace();
             }
         });
+
+        view.getSaveObjectsButton().setOnAction(event -> {
+            if (StudentCollections.getInstance().linkedStudentList.size() > 0) {
+                String nameFile = new String("Objects-" + String.valueOf(cntFiles) + ".txt");
+                System.out.println(nameFile);
+                cntFiles++;
+
+                try (
+                        FileOutputStream fileOutputStream = new FileOutputStream(nameFile);
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                ) {
+                    LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                    objectOutputStream.writeObject(studList.size());
+                    for (int i = 0; i < studList.size(); i++) {
+                        objectOutputStream.writeObject(studList.get(i));
+                    }
+                    TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
+                    HashSet<UUID> studSet = StudentCollections.getInstance().idHashSet;
+                    objectOutputStream.writeObject(studTree);
+                    objectOutputStream.writeObject(studSet);
+                } catch (FileNotFoundException eFileNotFound) {
+                    System.out.println("Error: file students.dat not found while serializing.");
+                } catch (IOException eIO) {
+                    System.err.println("Error: IOException while serializing");
+                    System.out.println(eIO.getMessage());
+                } catch (Exception ex) {
+                    System.err.println("Error: something happened while serializing");
+                }
+            } else {
+                System.out.println("Объекты отсутствуют.");
+            }
+        });
+
+        view.getLoadObjectsButton().setOnAction(event -> {
+            if (model.isStartFlag()) {
+                stopFunk();
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            File selectedFile = fileChooser.showOpenDialog(null);
+            System.out.println(selectedFile);
+
+            try (
+                    FileInputStream fileInputStream = new FileInputStream(selectedFile);
+                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            ) {
+                StudentCollections.getInstance().clearCollections(view);
+                StudentCollections.getInstance().reset();
+
+                LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                int listSize = (Integer) objectInputStream.readObject();
+                for (int i = 0; i < listSize; i++) {
+                    studList.add((Student) objectInputStream.readObject());
+                    StudentCollections.getInstance().idHashSet.add(studList.get(i).getId());
+                    StudentCollections.getInstance().bornTreeMap.put(studList.get(i).getId(), 0L);
+                }
+                StudentCollections.getInstance().linkedStudentList = studList;
+                TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
+                studTree.putAll((TreeMap<UUID, Long>) objectInputStream.readObject());
+                StudentCollections.getInstance().bornTreeMap = studTree;
+                StudentCollections.getInstance().idHashSet.addAll((HashSet<UUID>) objectInputStream.readObject());
+                int cntMale = 0;
+                int cntFemale = 0;
+                if (!studList.isEmpty()) {
+                    for (int i = 0; i < studList.size(); i++) {
+                        Student current = studList.get(i);
+                        studTree.replace(current.getId(), 0L);
+                        Platform.runLater(() -> view.getVisualPane().getChildren().add(current.getImageView()));
+                        if (current instanceof MaleStudent) {
+                            cntMale++;
+                        } else {
+                            cntFemale++;
+                        }
+                        MaleStudent.countMaleStudent = cntMale;
+                        FemaleStudent.countFemaleStudent = cntFemale;
+                    }
+                }
+            } catch (FileNotFoundException eFileNotFound) {
+                System.out.println("Error: file students.dat not found while serializing.");
+            } catch (IOException eIO) {
+                System.err.println("Error: IOException while serializing");
+                System.out.println(eIO.getMessage());
+            } catch (Exception ex) {
+                System.err.println("Error: something happened while serializing");
+            }
+        });
     }
+
+    private int cntFiles = 0;
 
     private void startFunk() {
         model.startGeneration();

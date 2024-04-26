@@ -176,9 +176,9 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <Button layoutX="2.0" layoutY="152.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Сохранить" />
-            <Button layoutX="2.0" layoutY="185.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Загрузить" />
-            <Button fx:id="buttonConsole" layoutX="704.0" layoutY="197.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Консоль" />
+            <Button fx:id="saveObjectsButton" layoutX="2.0" layoutY="152.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Сохранить" />
+            <Button fx:id="loadObjectsButton" layoutX="2.0" layoutY="185.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Загрузить" />
+            <Button fx:id="consoleButton" layoutX="704.0" layoutY="197.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Консоль" />
 
          </children>
       </Pane>

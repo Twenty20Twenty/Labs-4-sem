@@ -12,6 +12,7 @@ public class FemaleStudent extends Student{
     private double angle = 0.1;
     public double speed = 10;
     public double radius = 4;
+    private static String path = "src/main/resources/ru/nstu/javafx_labs_lipatov_v2/FemaleStudent.png";
 
 
     public static void setLiveTime(int liveTime) {
@@ -20,22 +21,21 @@ public class FemaleStudent extends Student{
 
     static {
         try{
-            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/FemaleStudent.png"));
+            image = new Image(new FileInputStream(path));
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
     public FemaleStudent(int _x, int _y) throws FileNotFoundException {
-        super(_x,_y);
-        imageView.setImage(image);
+        super(_x,_y, image, path);
         countFemaleStudent++;
     }
 
     @Override
     public void paint(){
-        imageView.setX(getX());
-        imageView.setY(getY());
+        imageView.imageView.setX(getX());
+        imageView.imageView.setY(getY());
     }
 
     @Override

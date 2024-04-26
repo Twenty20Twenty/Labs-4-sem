@@ -12,29 +12,28 @@ public class MaleStudent extends Student {
     public static int lifeTime = 4;
     public double speed = 1;
     private long time;
-
+    private static String path = "src/main/resources/ru/nstu/javafx_labs_lipatov_v2/MaleStudent.png";
     public static void setLifeTime(int lifeTime) {
         MaleStudent.lifeTime = lifeTime;
     }
 
     static {
         try{
-            image = new Image(new FileInputStream("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/MaleStudent.png"));
+            image = new Image(new FileInputStream(path));
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
     public MaleStudent(int _x, int _y) throws FileNotFoundException {
-        super(_x,_y);
-        imageView.setImage(image);
+        super(_x,_y, image, path);
         countMaleStudent++;
     }
 
     @Override
     public void paint(){
-        imageView.setX(getX());
-        imageView.setY(getY());
+        imageView.imageView.setX(getX());
+        imageView.imageView.setY(getY());
     }
 
     private boolean firstTime = true;

@@ -10,7 +10,7 @@ import java.util.UUID;
 public class StudentCollections {
     private static StudentCollections instance;
 
-    public final LinkedList<Student> linkedStudentList;
+    public LinkedList<Student> linkedStudentList;
     public HashSet<UUID> idHashSet;
     public TreeMap<UUID, Long> bornTreeMap;
 
@@ -70,5 +70,12 @@ public class StudentCollections {
         linkedStudentList.clear();
         idHashSet.clear();
         bornTreeMap.clear();
+    }
+
+    public void reset(){
+        linkedStudentList = null;
+        idHashSet = null;
+        bornTreeMap = null;
+        instance = null;
     }
 }

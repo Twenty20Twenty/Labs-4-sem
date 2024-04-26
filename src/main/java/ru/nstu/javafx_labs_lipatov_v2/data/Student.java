@@ -1,20 +1,22 @@
 package ru.nstu.javafx_labs_lipatov_v2.data;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.UUID;
 
 
-public abstract class Student implements IBehaviour {
+public abstract class Student implements IBehaviour, Serializable {
     private double posX;
     private double posY;
-    public ImageView imageView;
+    SerializableImageView imageView;
 
     public abstract void paint();
 
     public ImageView getImageView() {
-        return imageView;
+        return imageView.imageView;
     }
 
     private UUID id = UUID.randomUUID();
@@ -32,17 +34,17 @@ public abstract class Student implements IBehaviour {
         }
     }
 
-    public Student(int _x, int _y) throws FileNotFoundException {
+    public Student(int _x, int _y, Image image, String path) throws FileNotFoundException {
         this.posX = _x;
         this.posY = _y;
         checkId();
         StudentCollections.getInstance().idHashSet.add(this.id);
-        imageView = new ImageView();
-        imageView.setX(posX);
-        imageView.setY(posY);
-        imageView.setFitHeight(140);
-        imageView.setFitWidth(140);
-        imageView.setPreserveRatio(true);
+        imageView = new SerializableImageView(image, path);
+        imageView.imageView.setX(posX);
+        imageView.imageView.setY(posY);
+        imageView.imageView.setFitHeight(140);
+        imageView.imageView.setFitWidth(140);
+        imageView.imageView.setPreserveRatio(true);
     }
 
     @Override
