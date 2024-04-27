@@ -317,30 +317,34 @@ public class HabitatController {
 
         view.getSaveObjectsButton().setOnAction(event -> {
             if (StudentCollections.getInstance().linkedStudentList.size() > 0) {
-                String nameFile = new String("Objects-" + String.valueOf(cntFiles) + ".txt");
-                System.out.println(nameFile);
-                cntFiles++;
-
-                try (
-                        FileOutputStream fileOutputStream = new FileOutputStream(nameFile);
-                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                ) {
-                    LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
-                    objectOutputStream.writeObject(studList.size());
-                    for (int i = 0; i < studList.size(); i++) {
-                        objectOutputStream.writeObject(studList.get(i));
+                model.pauseGeneration("default", "default");
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Выбери место сохранения файла");
+                File selectedFile = fileChooser.showSaveDialog(null);
+                System.out.println(selectedFile);
+                model.unPauseGeneration();
+                if (selectedFile != null) {
+                    try (
+                            FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                    ) {
+                        LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                        objectOutputStream.writeObject(studList.size());
+                        for (int i = 0; i < studList.size(); i++) {
+                            objectOutputStream.writeObject(studList.get(i));
+                        }
+                        TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
+                        HashSet<UUID> studSet = StudentCollections.getInstance().idHashSet;
+                        objectOutputStream.writeObject(studTree);
+                        objectOutputStream.writeObject(studSet);
+                    } catch (FileNotFoundException eFileNotFound) {
+                        System.out.println("Error: file students.dat not found while serializing.");
+                    } catch (IOException eIO) {
+                        System.err.println("Error: IOException while serializing");
+                        System.out.println(eIO.getMessage());
+                    } catch (Exception ex) {
+                        System.err.println("Error: something happened while serializing");
                     }
-                    TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
-                    HashSet<UUID> studSet = StudentCollections.getInstance().idHashSet;
-                    objectOutputStream.writeObject(studTree);
-                    objectOutputStream.writeObject(studSet);
-                } catch (FileNotFoundException eFileNotFound) {
-                    System.out.println("Error: file students.dat not found while serializing.");
-                } catch (IOException eIO) {
-                    System.err.println("Error: IOException while serializing");
-                    System.out.println(eIO.getMessage());
-                } catch (Exception ex) {
-                    System.err.println("Error: something happened while serializing");
                 }
             } else {
                 System.out.println("Объекты отсутствуют.");
@@ -365,13 +369,10 @@ public class HabitatController {
                 ) {
                     StudentCollections.getInstance().clearCollections(view);
                     StudentCollections.getInstance().reset();
-                    //StudentCollections.getInstance().linkedStudentList = new LinkedList<Student>();
                     LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
                     int listSize = (Integer) objectInputStream.readObject();
                     for (int i = 0; i < listSize; i++) {
                         studList.add((Student) objectInputStream.readObject());
-                        //StudentCollections.getInstance().idHashSet.add(studList.get(i).getId());
-                        //StudentCollections.getInstance().bornTreeMap.put(studList.get(i).getId(), 0L);
                     }
                     //StudentCollections.getInstance().linkedStudentList = studList;
                     TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;

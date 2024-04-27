@@ -56,6 +56,7 @@ public class HabitatModel {
     }
 
     public void pauseGeneration(String fxmlLoader, String title) {
+        boolean flag = true;
         pauseMaleAI();
         pauseFemaleAI();
         pauseTime = System.currentTimeMillis();
@@ -64,27 +65,37 @@ public class HabitatModel {
         switch (title) {
             case "Текущие объекты":
                 text = StudentCollections.getInstance().getLiveObjString().toString();
+                flag = true;
                 break;
             case "Статистика":
                 text = getStatistic();
+                flag = true;
+                break;
+            case "default":
+                flag = false;
+                break;
+            default:
+                flag = false;
                 break;
         }
-        try {
-            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource(fxmlLoader));
-            Parent root = loader.load();
-            ModalWindow modalController = loader.getController();
-            modalController.model = this;
-            modalController.setText(text);
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setMaximized(false);
-            stage.setResizable(false);
-            stage.setTitle(title);
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (flag) {
+            try {
+                FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource(fxmlLoader));
+                Parent root = loader.load();
+                ModalWindow modalController = loader.getController();
+                modalController.model = this;
+                modalController.setText(text);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setMaximized(false);
+                stage.setResizable(false);
+                stage.setTitle(title);
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
