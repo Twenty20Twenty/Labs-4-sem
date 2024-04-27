@@ -29,8 +29,9 @@ public class SerializableImageView implements Serializable {
     @Serial
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        this.path = (String) in.readObject();
         imageView = new ImageView();
-        this.imageView.setImage(new Image(new FileInputStream((String) in.readObject())));
+        this.imageView.setImage(new Image(new FileInputStream(path)));
         this.imageView.setX((Double) in.readObject());
         this.imageView.setY((Double) in.readObject());
         this.imageView.setFitHeight((Double) in.readObject());

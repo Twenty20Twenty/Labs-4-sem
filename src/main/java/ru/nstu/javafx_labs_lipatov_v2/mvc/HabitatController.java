@@ -349,56 +349,61 @@ public class HabitatController {
 
         view.getLoadObjectsButton().setOnAction(event -> {
             if (model.isStartFlag()) {
+                model.setInformationWindowFlag(false);
                 stopFunk();
+                model.setInformationWindowFlag(true);
             }
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
             File selectedFile = fileChooser.showOpenDialog(null);
             System.out.println(selectedFile);
-
-            try (
-                    FileInputStream fileInputStream = new FileInputStream(selectedFile);
-                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            ) {
-                StudentCollections.getInstance().clearCollections(view);
-                StudentCollections.getInstance().reset();
-
-                LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
-                int listSize = (Integer) objectInputStream.readObject();
-                for (int i = 0; i < listSize; i++) {
-                    studList.add((Student) objectInputStream.readObject());
-                    StudentCollections.getInstance().idHashSet.add(studList.get(i).getId());
-                    StudentCollections.getInstance().bornTreeMap.put(studList.get(i).getId(), 0L);
-                }
-                StudentCollections.getInstance().linkedStudentList = studList;
-                TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
-                studTree.putAll((TreeMap<UUID, Long>) objectInputStream.readObject());
-                StudentCollections.getInstance().bornTreeMap = studTree;
-                StudentCollections.getInstance().idHashSet.addAll((HashSet<UUID>) objectInputStream.readObject());
-                int cntMale = 0;
-                int cntFemale = 0;
-                if (!studList.isEmpty()) {
-                    for (int i = 0; i < studList.size(); i++) {
-                        Student current = studList.get(i);
-                        studTree.replace(current.getId(), 0L);
-                        Platform.runLater(() -> view.getVisualPane().getChildren().add(current.getImageView()));
-                        if (current instanceof MaleStudent) {
-                            cntMale++;
-                        } else {
-                            cntFemale++;
-                        }
-                        MaleStudent.countMaleStudent = cntMale;
-                        FemaleStudent.countFemaleStudent = cntFemale;
+            if (selectedFile != null) {
+                try (
+                        FileInputStream fileInputStream = new FileInputStream(selectedFile);
+                        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                ) {
+                    StudentCollections.getInstance().clearCollections(view);
+                    StudentCollections.getInstance().reset();
+                    //StudentCollections.getInstance().linkedStudentList = new LinkedList<Student>();
+                    LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                    int listSize = (Integer) objectInputStream.readObject();
+                    for (int i = 0; i < listSize; i++) {
+                        studList.add((Student) objectInputStream.readObject());
+                        //StudentCollections.getInstance().idHashSet.add(studList.get(i).getId());
+                        //StudentCollections.getInstance().bornTreeMap.put(studList.get(i).getId(), 0L);
                     }
+                    //StudentCollections.getInstance().linkedStudentList = studList;
+                    TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
+                    studTree.putAll((TreeMap<UUID, Long>) objectInputStream.readObject());
+                    StudentCollections.getInstance().bornTreeMap = studTree;
+                    StudentCollections.getInstance().idHashSet.addAll((HashSet<UUID>) objectInputStream.readObject());
+                    int cntMale = 0;
+                    int cntFemale = 0;
+                    if (!studList.isEmpty()) {
+                        for (int i = 0; i < studList.size(); i++) {
+                            Student current = studList.get(i);
+                            studTree.replace(current.getId(), 0L);
+                            Platform.runLater(() -> view.getVisualPane().getChildren().add(current.getImageView()));
+                            if (current instanceof MaleStudent) {
+                                cntMale++;
+                            } else {
+                                cntFemale++;
+                            }
+                            MaleStudent.countMaleStudent = cntMale;
+                            FemaleStudent.countFemaleStudent = cntFemale;
+                        }
+                    }
+                } catch (FileNotFoundException eFileNotFound) {
+                    System.out.println("Error: file students.dat not found while serializing.");
+                } catch (IOException eIO) {
+                    System.err.println("Error: IOException while serializing");
+                    System.out.println(eIO.getMessage());
+                } catch (Exception ex) {
+                    System.err.println("Error: something happened while serializing");
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
                 }
-            } catch (FileNotFoundException eFileNotFound) {
-                System.out.println("Error: file students.dat not found while serializing.");
-            } catch (IOException eIO) {
-                System.err.println("Error: IOException while serializing");
-                System.out.println(eIO.getMessage());
-            } catch (Exception ex) {
-                System.err.println("Error: something happened while serializing");
             }
         });
     }
