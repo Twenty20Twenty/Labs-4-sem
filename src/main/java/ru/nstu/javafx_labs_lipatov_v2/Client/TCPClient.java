@@ -2,6 +2,7 @@ package ru.nstu.javafx_labs_lipatov_v2.Client;
 
 import javafx.application.Platform;
 import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatModel;
+import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView;
 
 import java.io.*;
 import java.net.ConnectException;
@@ -48,23 +49,54 @@ public class TCPClient {
     public void onReceiveObject() throws IOException {
         try {
             MessageBox receiveMessage = (MessageBox) in.readObject();
+            HabitatView view = model.getView();
             switch (receiveMessage.getCommand()) {
                 case 0:
-                    if (model.isStartFlag())
+                    model.setInformationWindowFlag(false);
+                    if (model.isStartFlag()) {
                         model.stopGeneration();
+                        if (!model.isStartFlag()) {
+                            view.getButtonStart().setDisable(false);
+                            view.getButtonStop().setDisable(true);
+                            view.getLiveObjButton().setDisable(true);
+                            view.getLiveObjMenuItem().setDisable(true);
+                        }
+                    }
+                    view.getApplyMaleProp().setDisable(false);
+                    view.getMaleSpawnTimeTextField().setDisable(false);
+                    view.getMaleSpawnProbabilityBox().setDisable(false);
+                    view.getApplyFemaleProp().setDisable(false);
+                    view.getFemaleSpawnTimeTextField().setDisable(false);
+                    view.getFemaleSpawnProbabilityBox().setDisable(false);
+                    view.getMaleLifeTimeTextField().setDisable(false);
+                    view.getFemaleLifeTimeTextField().setDisable(false);
+                    view.getStartMenuItem().setDisable(false);
+                    view.getStopMenuItem().setDisable(true);
+                    model.setInformationWindowFlag(true);
                     break;
                 case 1:
-                    if (!model.isStartFlag())
-                        model.startGeneration();
+                    model.startGeneration();
+                    view.getButtonStart().setDisable(true);
+                    view.getButtonStop().setDisable(false);
+                    view.getApplyMaleProp().setDisable(true);
+                    view.getMaleSpawnTimeTextField().setDisable(true);
+                    view.getMaleSpawnProbabilityBox().setDisable(true);
+                    view.getApplyFemaleProp().setDisable(true);
+                    view.getFemaleSpawnTimeTextField().setDisable(true);
+                    view.getFemaleSpawnProbabilityBox().setDisable(true);
+                    view.getMaleLifeTimeTextField().setDisable(true);
+                    view.getFemaleLifeTimeTextField().setDisable(true);
+                    view.getLiveObjButton().setDisable(false);
+                    view.getLiveObjMenuItem().setDisable(false);
+                    view.getStartMenuItem().setDisable(true);
+                    view.getStopMenuItem().setDisable(false);
                     break;
                 case 2:
-                    if (model.isStartFlag())
-                        model.pauseMaleAI();
                     break;
                 default:
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         model.getView().getConnectedClientsList().getItems().clear();
-                        for (String client: receiveMessage.getClientList()){
+                        for (String client : receiveMessage.getClientList()) {
                             model.getView().getConnectedClientsList().getItems().add(client);
                         }
                     });

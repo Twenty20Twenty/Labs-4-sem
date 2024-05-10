@@ -45,7 +45,7 @@ public class Application extends javafx.application.Application {
                 if (model.getClient().getSocket() != null)
                     model.getClient().disconnect();
 
-                StudentCollections.getInstance().clearCollections(view);
+                model.clearScreen();
                 Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
                 stage.close();
 

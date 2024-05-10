@@ -1,8 +1,7 @@
 package ru.nstu.javafx_labs_lipatov_v2.Client;
 
-import java.io.Serial;
+
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MessageBox implements Serializable {
@@ -10,12 +9,12 @@ public class MessageBox implements Serializable {
     private int client;
     private int command;
 
-    public MessageBox(ArrayList<String> list, int commandNum){
+    public MessageBox(ArrayList<String> list, int commandNum) {
         clientList = list;
         command = commandNum;
     }
 
-    public MessageBox(int clientNum, int commandNum){
+    public MessageBox(int clientNum, int commandNum) {
         client = clientNum;
         command = commandNum;
     }

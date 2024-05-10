@@ -226,6 +226,7 @@ public class HabitatView {
     public ComboBox getPriorityFemaleComboBox() {
         return priorityFemaleComboBox;
     }
+
     public Button getConsoleButton() {
         return consoleButton;
     }

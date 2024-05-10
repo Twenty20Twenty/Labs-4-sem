@@ -2,10 +2,7 @@ package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 public class StudentCollections {
     private static StudentCollections instance;
@@ -27,19 +24,19 @@ public class StudentCollections {
         return instance;
     }
 
-    public synchronized void updateCollections(Long time, HabitatView view) throws IndexOutOfBoundsException{
+    public synchronized void updateCollections(Long time, HabitatView view) throws IndexOutOfBoundsException {
         for (int i = 0; i < linkedStudentList.size(); i++) {
             Student current = linkedStudentList.get(i);
             Long curBornTime = bornTreeMap.get(current.getId());
             if (current instanceof MaleStudent) {
-                if ((time - curBornTime) >= (MaleStudent.lifeTime * 1000)){
+                if ((time - curBornTime) >= (MaleStudent.lifeTime * 1000)) {
                     view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());
                     linkedStudentList.remove(i);
                 }
             } else {
-                if ((time - curBornTime) >= (FemaleStudent.lifeTime * 1000)){
+                if ((time - curBornTime) >= (FemaleStudent.lifeTime * 1000)) {
                     view.getVisualPane().getChildren().remove(current.getImageView());
                     bornTreeMap.remove(current.getId());
                     idHashSet.remove(current.getId());
@@ -49,13 +46,13 @@ public class StudentCollections {
         }
     }
 
-    public StringBuilder getLiveObjString(){
+    public StringBuilder getLiveObjString() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i =0; i < linkedStudentList.size(); i++){
-            Student current =  linkedStudentList.get(i);
-            if (current instanceof MaleStudent){
+        for (int i = 0; i < linkedStudentList.size(); i++) {
+            Student current = linkedStudentList.get(i);
+            if (current instanceof MaleStudent) {
                 stringBuilder.append("Male Student ");
-            }else{
+            } else {
                 stringBuilder.append("Female Student ");
             }
             stringBuilder.append(current.getId() + " ");
@@ -65,14 +62,15 @@ public class StudentCollections {
         return stringBuilder;
     }
 
-    public void clearCollections(HabitatView view) {
-        linkedStudentList.forEach((tmp) -> view.getVisualPane().getChildren().remove(tmp.getImageView()));
-        linkedStudentList.clear();
-        idHashSet.clear();
-        bornTreeMap.clear();
+    public void clearCollections() {
+        synchronized (linkedStudentList) {
+            linkedStudentList.clear();
+            idHashSet.clear();
+            bornTreeMap.clear();
+        }
     }
 
-    public void reset(){
+    public void reset() {
         linkedStudentList = null;
         idHashSet = null;
         bornTreeMap = null;

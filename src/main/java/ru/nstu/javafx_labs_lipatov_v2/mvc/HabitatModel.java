@@ -18,6 +18,7 @@ import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,7 +56,6 @@ public class HabitatModel {
         startFlag = true;
         seconds = -1;
         minutes = 0;
-        timer = new Timer();
         startTime = System.currentTimeMillis();
         secStart = startTime;
         beginMaleAI();
@@ -119,10 +119,9 @@ public class HabitatModel {
 
     public void stopGeneration() {
         startFlag = false;
-        if (!startFlag) {
-            timer.cancel();
-            StudentCollections.getInstance().clearCollections(view);
-        }
+        timer.cancel();
+        Platform.runLater(this::clearScreen);
+
         MaleStudent.countMaleStudent = 0;
         FemaleStudent.countFemaleStudent = 0;
         lastTimeM = -100;
@@ -131,9 +130,20 @@ public class HabitatModel {
         pauseFemaleAI();
     }
 
+    void clearScreen() {
+        if (StudentCollections.getInstance() != null) {
+            final Iterator<Student> iterator = StudentCollections.getInstance().linkedStudentList.listIterator();
+            while (iterator.hasNext()) {
+                view.getVisualPane().getChildren().remove(iterator.next().getImageView());
+            }
+            StudentCollections.getInstance().clearCollections();
+        }
+    }
+
     private long secStart;
 
     private void startWork() {
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

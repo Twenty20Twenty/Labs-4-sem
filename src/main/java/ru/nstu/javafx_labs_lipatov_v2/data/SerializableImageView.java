@@ -9,13 +9,13 @@ public class SerializableImageView implements Serializable {
     transient ImageView imageView;
     transient String path;
 
-    public SerializableImageView(Image image, String path){
+    public SerializableImageView(Image image, String path) {
         this.imageView = new ImageView(image);
         this.path = path;
     }
 
     @Serial
-    private void writeObject(ObjectOutputStream out) throws IOException{
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
 
         out.writeObject(path);

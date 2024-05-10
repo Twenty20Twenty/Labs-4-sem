@@ -82,18 +82,6 @@ public class HabitatController {
 
         view.getPriorityFemaleComboBox().getSelectionModel().select(properties.getProperty("priorityFemale"));
         model.femaleAI.setPriority(Integer.parseInt(properties.getProperty("priorityFemale")));
-
-        /*
-        maleSpawnTimeTextField.setText("2");
-        maleSpawnProbability.getSelectionModel().select("50 %");
-        maleLifeTimeTextField.setText("4");
-        priorityMaleComboBox.getSelectionModel().select("5");
-
-        femaleSpawnTimeTextField.setText("3");
-        femaleSpawnProbability.getSelectionModel().select("80 %");
-        femaleLifeTimeTextField.setText("5");
-        priorityFemaleComboBox.getSelectionModel().select("5");
-        */
     }
 
     public void saveProperties() {
@@ -109,7 +97,7 @@ public class HabitatController {
         properties.setProperty("probobalityFemale", String.valueOf(view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
 
         try {
-            properties.store( new FileOutputStream(new File("Application.properties")), "Config");
+            properties.store(new FileOutputStream(new File("Application.properties")), "Config");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -153,7 +141,8 @@ public class HabitatController {
             if (model.getClient().getSocket() != null)
                 model.getClient().disconnect();
 
-            StudentCollections.getInstance().clearCollections(view);
+            model.clearScreen();
+            //StudentCollections.getInstance().clearCollections(view);
             Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
             stage.close();
 
@@ -373,14 +362,13 @@ public class HabitatController {
                         FileInputStream fileInputStream = new FileInputStream(selectedFile);
                         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 ) {
-                    StudentCollections.getInstance().clearCollections(view);
+                    model.clearScreen();
                     StudentCollections.getInstance().reset();
                     LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
                     int listSize = (Integer) objectInputStream.readObject();
                     for (int i = 0; i < listSize; i++) {
                         studList.add((Student) objectInputStream.readObject());
                     }
-                    //StudentCollections.getInstance().linkedStudentList = studList;
                     TreeMap<UUID, Long> studTree = StudentCollections.getInstance().bornTreeMap;
                     studTree.putAll((TreeMap<UUID, Long>) objectInputStream.readObject());
                     StudentCollections.getInstance().bornTreeMap = studTree;
@@ -402,7 +390,7 @@ public class HabitatController {
                         }
                     }
                 } catch (FileNotFoundException eFileNotFound) {
-                    System.out.println("Error: file students.dat not found while serializing.");
+                    System.out.println("Error: file " + selectedFile + " not found while serializing.");
                 } catch (IOException eIO) {
                     System.err.println("Error: IOException while serializing");
                     System.out.println(eIO.getMessage());
@@ -419,7 +407,7 @@ public class HabitatController {
 
     private void startFunk() {
         model.startGeneration();
-        if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null){
+        if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null) {
             String selClient = view.getConnectedClientsList().getSelectionModel().getSelectedItem();
             model.getClient().sendObject(new MessageBox(Integer.parseInt(selClient.split(" ")[1]), 1));
         }
@@ -441,7 +429,7 @@ public class HabitatController {
 
     private void stopFunk() {
         if (model.isStartFlag()) {
-            if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null){
+            if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null) {
                 String selClient = view.getConnectedClientsList().getSelectionModel().getSelectedItem();
                 model.getClient().sendObject(new MessageBox(Integer.parseInt(selClient.split(" ")[1]), 0));
             }

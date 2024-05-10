@@ -51,14 +51,17 @@ public abstract class Student implements IBehaviour, Serializable {
     public double getX() {
         return posX;
     }
+
     @Override
     public void setX(double posX) {
         this.posX = posX;
     }
+
     @Override
     public double getY() {
         return posY;
     }
+
     @Override
     public void setY(double posY) {
         this.posY = posY;
