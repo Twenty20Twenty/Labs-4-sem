@@ -1,4 +1,4 @@
-package ru.nstu.javafx_labs_lipatov_v2;
+package ru.nstu.javafx_labs_lipatov_v2.mvc;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -6,11 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
+import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
 import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
-import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatController;
-import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatModel;
-import ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView;
-import ru.nstu.javafx_labs_lipatov_v2.AI.*;
 
 import java.io.IOException;
 
@@ -21,7 +19,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainLauncher.class.getResource("view.fxml"));
         Parent root = fxmlLoader.load();
         System.out.println();
         view = new HabitatView();
@@ -43,6 +41,10 @@ public class Application extends javafx.application.Application {
                 if (model.isStartFlag()) {
                     model.getTimer().cancel();
                 }
+
+                if (model.getClient().getSocket() != null)
+                    model.getClient().disconnect();
+
                 StudentCollections.getInstance().clearCollections(view);
                 Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
                 stage.close();

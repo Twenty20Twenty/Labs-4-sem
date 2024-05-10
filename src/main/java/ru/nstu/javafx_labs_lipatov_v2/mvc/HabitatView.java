@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import java.util.TreeMap;
 
 public class HabitatView {
-    private static int width = 800;
+    private static int width = 1100;
     private static int height = 800;
 
     public HabitatView() {
@@ -81,7 +81,8 @@ public class HabitatView {
     private Button saveObjectsButton;
     @FXML
     private Button loadObjectsButton;
-
+    @FXML
+    private ListView<String> connectedClientsList;
 
     public void setComboBoxMap() {
         int procent = 0;
@@ -235,5 +236,9 @@ public class HabitatView {
 
     public Button getLoadObjectsButton() {
         return loadObjectsButton;
+    }
+
+    public ListView<String> getConnectedClientsList() {
+        return connectedClientsList;
     }
 }

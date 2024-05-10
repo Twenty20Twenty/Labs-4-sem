@@ -1,4 +1,4 @@
-package ru.nstu.javafx_labs_lipatov_v2;
+package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

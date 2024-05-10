@@ -8,7 +8,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.AI.FemaleAI;
 import ru.nstu.javafx_labs_lipatov_v2.AI.MaleAI;
-import ru.nstu.javafx_labs_lipatov_v2.ModalWindow;
+import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
+import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
+import ru.nstu.javafx_labs_lipatov_v2.data.ModalWindow;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.Student;
@@ -21,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class HabitatModel {
+    private TCPClient client;
     private Timer timer;
     private double pMale;
     private double pFemale;
@@ -38,9 +41,14 @@ public class HabitatModel {
     public FemaleAI femaleAI = new FemaleAI();
 
     public HabitatModel(HabitatView view) {
-        this.view = view;
-        maleAI.start();
-        femaleAI.start();
+        try {
+            this.view = view;
+            client = new TCPClient(this);
+            maleAI.start();
+            femaleAI.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startGeneration() {
@@ -80,7 +88,7 @@ public class HabitatModel {
         }
         if (flag) {
             try {
-                FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource(fxmlLoader));
+                FXMLLoader loader = new FXMLLoader(MainLauncher.class.getResource(fxmlLoader));
                 Parent root = loader.load();
                 ModalWindow modalController = loader.getController();
                 modalController.model = this;
@@ -231,7 +239,7 @@ public class HabitatModel {
 
     public void authorsWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(ModalWindow.class.getResource("authorsWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainLauncher.class.getResource("authorsWindow.fxml"));
             Parent root = loader.load();
             ModalWindow modalWindow = new ModalWindow();
             ModalWindow modalController = loader.getController();
@@ -331,5 +339,9 @@ public class HabitatModel {
 
     public int getTimeFemale() {
         return timeFemale;
+    }
+
+    public TCPClient getClient() {
+        return client;
     }
 }

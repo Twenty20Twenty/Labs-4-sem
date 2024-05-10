@@ -1,7 +1,5 @@
 package ru.nstu.javafx_labs_lipatov_v2.AI;
 
-import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
-
 public abstract class BaseAI extends Thread{
     public String threadName;
     public final Object obj = new Object();

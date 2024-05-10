@@ -9,7 +9,9 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import ru.nstu.javafx_labs_lipatov_v2.UserConsole;
+import ru.nstu.javafx_labs_lipatov_v2.Client.MessageBox;
+import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
+import ru.nstu.javafx_labs_lipatov_v2.data.UserConsole;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.Student;
@@ -42,10 +44,10 @@ public class HabitatController {
         this.model = model;
         properties = new Properties();
         try {
-            properties.load(new FileInputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")));
+            properties.load(new FileInputStream(new File("Application.properties")));
         } catch (FileNotFoundException e) {
             try {
-                defaultProperties().store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")), "Config");
+                defaultProperties().store(new FileOutputStream(new File("Application.properties")), "Config");
                 properties = defaultProperties();
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -107,7 +109,7 @@ public class HabitatController {
         properties.setProperty("probobalityFemale", String.valueOf(view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
 
         try {
-            properties.store(new FileOutputStream(new File("src/main/resources/ru/nstu/javafx_labs_lipatov_v2/Application.properties")), "Config");
+            properties.store( new FileOutputStream(new File("Application.properties")), "Config");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -147,6 +149,10 @@ public class HabitatController {
             if (model.isStartFlag()) {
                 model.getTimer().cancel();
             }
+
+            if (model.getClient().getSocket() != null)
+                model.getClient().disconnect();
+
             StudentCollections.getInstance().clearCollections(view);
             Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
             stage.close();
@@ -413,6 +419,10 @@ public class HabitatController {
 
     private void startFunk() {
         model.startGeneration();
+        if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null){
+            String selClient = view.getConnectedClientsList().getSelectionModel().getSelectedItem();
+            model.getClient().sendObject(new MessageBox(Integer.parseInt(selClient.split(" ")[1]), 1));
+        }
         view.getButtonStart().setDisable(true);
         view.getButtonStop().setDisable(false);
         view.getApplyMaleProp().setDisable(true);
@@ -431,8 +441,11 @@ public class HabitatController {
 
     private void stopFunk() {
         if (model.isStartFlag()) {
+            if (view.getConnectedClientsList().getSelectionModel().getSelectedItem() != null){
+                String selClient = view.getConnectedClientsList().getSelectionModel().getSelectedItem();
+                model.getClient().sendObject(new MessageBox(Integer.parseInt(selClient.split(" ")[1]), 0));
+            }
             if (model.isInformationWindowFlag()) {
-                //model.pauseGeneration("infModalWindow.fxml", "Статистика");
                 model.pauseGeneration("infModalWindow.fxml", "Статистика");
             } else {
                 model.stopGeneration();

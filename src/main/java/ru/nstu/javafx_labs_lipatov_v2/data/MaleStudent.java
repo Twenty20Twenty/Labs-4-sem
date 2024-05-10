@@ -1,8 +1,7 @@
 package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import javafx.scene.image.Image;
-
-import java.io.FileInputStream;
+import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
 import java.io.FileNotFoundException;
 import java.util.Random;
 
@@ -12,17 +11,13 @@ public class MaleStudent extends Student {
     public static int lifeTime = 4;
     public double speed = 1;
     private long time;
-    private static String path = "src/main/resources/ru/nstu/javafx_labs_lipatov_v2/MaleStudent.png";
+    private static String path = "MaleStudent.png";
     public static void setLifeTime(int lifeTime) {
         MaleStudent.lifeTime = lifeTime;
     }
 
     static {
-        try{
-            image = new Image(new FileInputStream(path));
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
+            image = new Image(MainLauncher.class.getResourceAsStream(path));
     }
 
     public MaleStudent(int _x, int _y) throws FileNotFoundException {
