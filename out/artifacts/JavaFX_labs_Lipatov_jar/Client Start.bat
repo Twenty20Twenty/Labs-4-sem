@@ -1,0 +1,1 @@
+java -jar .\JavaFX_labs_Lipatov.jar
