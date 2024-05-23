@@ -10,7 +10,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.Client.MessageBox;
-import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
 import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
 import ru.nstu.javafx_labs_lipatov_v2.SQL.StudentDB;
 import ru.nstu.javafx_labs_lipatov_v2.data.UserConsole;
@@ -145,18 +144,15 @@ public class HabitatController {
                 model.getTimer().cancel();
             }
 
-            if (model.getClient().getSocket() != null)
-                model.getClient().disconnect();
+            if (model.getClient().getSocket() != null) model.getClient().disconnect();
 
             model.clearScreen();
             //StudentCollections.getInstance().clearCollections(view);
             Stage stage = (Stage) view.getButtonStart().getScene().getWindow();
             stage.close();
 
-            if (model.maleAI.paused)
-                model.maleAI.interrupt();
-            if (model.femaleAI.paused)
-                model.femaleAI.interrupt();
+            if (model.maleAI.paused) model.maleAI.interrupt();
+            if (model.femaleAI.paused) model.femaleAI.interrupt();
 
             model.maleAI.end();
             model.femaleAI.end();
@@ -184,8 +180,7 @@ public class HabitatController {
 
         view.getApplyFemaleProp().setOnAction(event -> {
             String userChoiseP = (String) view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem();
-            if (userChoiseP == null)
-                userChoiseP = "null";
+            if (userChoiseP == null) userChoiseP = "null";
 
             for (Map.Entry<String, Float> entry : view.getComboBoxMap().entrySet()) {
                 String key = entry.getKey();
@@ -226,8 +221,7 @@ public class HabitatController {
 
         view.getApplyMaleProp().setOnAction(event -> {
             String userChoiseP = (String) view.getMaleSpawnProbabilityBox().getSelectionModel().getSelectedItem();
-            if (userChoiseP == null)
-                userChoiseP = "null";
+            if (userChoiseP == null) userChoiseP = "null";
 
             for (Map.Entry<String, Float> entry : view.getComboBoxMap().entrySet()) {
                 String key = entry.getKey();
@@ -326,10 +320,7 @@ public class HabitatController {
                 System.out.println(selectedFile);
 
                 if (selectedFile != null) {
-                    try (
-                            FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
-                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                    ) {
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(selectedFile); ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);) {
                         LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
                         objectOutputStream.writeObject(studList.size());
                         for (int i = 0; i < studList.size(); i++) {
@@ -366,10 +357,7 @@ public class HabitatController {
             File selectedFile = fileChooser.showOpenDialog(null);
             System.out.println(selectedFile);
             if (selectedFile != null) {
-                try (
-                        FileInputStream fileInputStream = new FileInputStream(selectedFile);
-                        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                ) {
+                try (FileInputStream fileInputStream = new FileInputStream(selectedFile); ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);) {
                     model.clearScreen();
                     StudentCollections.getInstance().reset();
                     LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
@@ -411,8 +399,8 @@ public class HabitatController {
         });
 
         view.getSaveObjectsDBButton().setOnAction(event -> {
-            String type = (String)view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
-            switch (type){
+            String type = (String) view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
+            switch (type) {
                 case "All objects":
                     if (!StudentCollections.getInstance().linkedStudentList.isEmpty()) {
                         if (model.isStartFlag()) {
@@ -469,8 +457,8 @@ public class HabitatController {
             model.clearScreen();
             StudentCollections.getInstance().reset();
 
-            String type = (String)view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
-            switch (type){
+            String type = (String) view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
+            switch (type) {
                 case "All objects":
                     StudentDB.getStudent(view, 0);
                     break;

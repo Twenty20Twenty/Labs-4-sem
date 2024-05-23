@@ -6,9 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
 import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
-import ru.nstu.javafx_labs_lipatov_v2.data.StudentCollections;
+
 
 import java.io.IOException;
 
