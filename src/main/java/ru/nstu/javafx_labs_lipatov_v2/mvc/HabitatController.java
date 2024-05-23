@@ -11,6 +11,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.Client.MessageBox;
 import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
+import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
 import ru.nstu.javafx_labs_lipatov_v2.data.UserConsole;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
@@ -291,7 +292,7 @@ public class HabitatController {
 
         view.getConsoleButton().setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(UserConsole.class.getResource("console.fxml"));
+                FXMLLoader loader = new FXMLLoader(MainLauncher.class.getResource("console.fxml"));
                 Parent root = loader.load();
                 UserConsole console = loader.getController();
                 console.parentModel = model;
@@ -317,7 +318,7 @@ public class HabitatController {
                 fileChooser.setTitle("Выбери место сохранения файла");
                 File selectedFile = fileChooser.showSaveDialog(null);
                 System.out.println(selectedFile);
-                model.unPauseGeneration();
+
                 if (selectedFile != null) {
                     try (
                             FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
@@ -333,7 +334,7 @@ public class HabitatController {
                         objectOutputStream.writeObject(studTree);
                         objectOutputStream.writeObject(studSet);
                     } catch (FileNotFoundException eFileNotFound) {
-                        System.out.println("Error: file students.dat not found while serializing.");
+                        System.out.println("Error: file " + selectedFile + " not found while serializing.");
                     } catch (IOException eIO) {
                         System.err.println("Error: IOException while serializing");
                         System.out.println(eIO.getMessage());
@@ -341,6 +342,7 @@ public class HabitatController {
                         System.err.println("Error: something happened while serializing");
                     }
                 }
+                model.unPauseGeneration();
             } else {
                 System.out.println("Объекты отсутствуют.");
             }
@@ -385,10 +387,10 @@ public class HabitatController {
                             } else {
                                 cntFemale++;
                             }
-                            MaleStudent.countMaleStudent = cntMale;
-                            FemaleStudent.countFemaleStudent = cntFemale;
                         }
                     }
+                    MaleStudent.countMaleStudent = cntMale;
+                    FemaleStudent.countFemaleStudent = cntFemale;
                 } catch (FileNotFoundException eFileNotFound) {
                     System.out.println("Error: file " + selectedFile + " not found while serializing.");
                 } catch (IOException eIO) {

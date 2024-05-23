@@ -2,6 +2,7 @@ package ru.nstu.javafx_labs_lipatov_v2.data;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
 
 import java.io.*;
 
@@ -31,7 +32,7 @@ public class SerializableImageView implements Serializable {
         in.defaultReadObject();
         this.path = (String) in.readObject();
         imageView = new ImageView();
-        this.imageView.setImage(new Image(new FileInputStream(path)));
+        this.imageView.setImage(new Image(MainLauncher.class.getResourceAsStream(path)));
         this.imageView.setX((Double) in.readObject());
         this.imageView.setY((Double) in.readObject());
         this.imageView.setFitHeight((Double) in.readObject());
