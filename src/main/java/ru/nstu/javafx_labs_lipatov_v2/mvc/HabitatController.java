@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import ru.nstu.javafx_labs_lipatov_v2.Client.MessageBox;
 import ru.nstu.javafx_labs_lipatov_v2.Client.TCPClient;
 import ru.nstu.javafx_labs_lipatov_v2.MainLauncher;
+import ru.nstu.javafx_labs_lipatov_v2.SQL.StudentDB;
 import ru.nstu.javafx_labs_lipatov_v2.data.UserConsole;
 import ru.nstu.javafx_labs_lipatov_v2.data.FemaleStudent;
 import ru.nstu.javafx_labs_lipatov_v2.data.MaleStudent;
@@ -37,6 +38,8 @@ public class HabitatController {
         prop.setProperty("lifeFemale", "5");
         prop.setProperty("probobalityFemale", "80");
         prop.setProperty("priorityFemale", "5");
+
+        prop.setProperty("typeObjectDB", "All objects");
         return prop;
     }
 
@@ -83,6 +86,8 @@ public class HabitatController {
 
         view.getPriorityFemaleComboBox().getSelectionModel().select(properties.getProperty("priorityFemale"));
         model.femaleAI.setPriority(Integer.parseInt(properties.getProperty("priorityFemale")));
+
+        view.getTypeObjectsDBChoiseBox().getSelectionModel().select(properties.getProperty("typeObjectDB"));
     }
 
     public void saveProperties() {
@@ -97,6 +102,7 @@ public class HabitatController {
         properties.setProperty("probobalityMale", String.valueOf(view.getMaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
         properties.setProperty("probobalityFemale", String.valueOf(view.getFemaleSpawnProbabilityBox().getSelectionModel().getSelectedItem()).replaceAll(" %", ""));
 
+        properties.setProperty("typeObjectDB", String.valueOf(view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem()));
         try {
             properties.store(new FileOutputStream(new File("Application.properties")), "Config");
         } catch (IOException e1) {
@@ -403,9 +409,82 @@ public class HabitatController {
                 }
             }
         });
-    }
 
-    private int cntFiles = 0;
+        view.getSaveObjectsDBButton().setOnAction(event -> {
+            String type = (String)view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
+            switch (type){
+                case "All objects":
+                    if (!StudentCollections.getInstance().linkedStudentList.isEmpty()) {
+                        if (model.isStartFlag()) {
+                            model.pauseGeneration("default", "default");
+                            LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                            for (int i = 0; i < studList.size(); i++) {
+                                StudentDB.addStudent(studList.get(i));
+                            }
+                            model.unPauseGeneration();
+                        }
+                    }
+                    break;
+                case "MaleStudent":
+                    if (!StudentCollections.getInstance().linkedStudentList.isEmpty()) {
+                        if (model.isStartFlag()) {
+                            model.pauseGeneration("default", "default");
+                            LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                            for (int i = 0; i < studList.size(); i++) {
+                                if (studList.get(i) instanceof MaleStudent) {
+                                    StudentDB.addStudent(studList.get(i));
+                                }
+                            }
+                            model.unPauseGeneration();
+                        }
+                    }
+                    break;
+                case "FemaleStudent":
+                    if (!StudentCollections.getInstance().linkedStudentList.isEmpty()) {
+                        if (model.isStartFlag()) {
+                            model.pauseGeneration("default", "default");
+                            LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+                            for (int i = 0; i < studList.size(); i++) {
+                                if (studList.get(i) instanceof FemaleStudent) {
+                                    StudentDB.addStudent(studList.get(i));
+                                }
+                            }
+                            model.unPauseGeneration();
+                        }
+                    }
+                    break;
+                default:
+                    return;
+            }
+        });
+
+        view.getLoadObjectsDBButton().setOnAction(event -> {
+            if (model.isStartFlag()) {
+                model.setInformationWindowFlag(false);
+                stopFunk();
+                model.setInformationWindowFlag(true);
+            }
+
+            model.clearScreen();
+            StudentCollections.getInstance().reset();
+            LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
+
+            String type = (String)view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
+            switch (type){
+                case "All objects":
+
+                    break;
+                case "MaleStudent":
+
+                    break;
+                case "FemaleStudent":
+
+                    break;
+                default:
+                    return;
+            }
+        });
+    }
 
     private void startFunk() {
         model.startGeneration();

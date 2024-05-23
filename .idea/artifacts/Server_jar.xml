@@ -6,7 +6,6 @@
         <element id="file-copy" path="$PROJECT_DIR$/Server/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="Server" />
-      <element id="module-output" name="JavaFX_labs_Lipatov" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21/javafx-graphics-21.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/21/javafx-base-21-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/21/javafx-controls-21.jar" path-in-jar="/" />
@@ -15,6 +14,7 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/21/javafx-controls-21-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/21/javafx-graphics-21-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/21/javafx-base-21.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/out/production/JavaFX_labs_Lipatov_v2/ru/nstu/javafx_labs_lipatov_v2" />
     </root>
   </artifact>
 </component>

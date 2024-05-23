@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<SplitPane fx:id="splitPane" dividerPositions="0.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="false" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nstu.javafx_labs_lipatov_v2.mvc.HabitatView">
+   <items>
+      <Pane fx:id="managmentPane" style="-fx-background-color: #808080;">
+         <children>
+             <Button fx:id="buttonStart" disable="false" layoutX="7.0" layoutY="41.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #00FF00;" text="Старт" textAlignment="CENTER">
+                <font>
+                   <Font name="System Bold" size="15.0" />
+                </font>
+             </Button>
+             <Button fx:id="buttonStop" disable="true" layoutX="7.0" layoutY="96.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="64.0" style="-fx-background-color: #FF0000;" text="Стоп" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="15.0" />
+                </font>
+             </Button>
+            <RadioButton fx:id="radioButtonShowTimer" layoutX="85.0" layoutY="96.0" mnemonicParsing="false" selected="true" text="Показывать время симуляции">
+               <toggleGroup>
+                  <ToggleGroup fx:id="tgTimer" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioButtonHideTimer" layoutX="85.0" layoutY="123.0" mnemonicParsing="false" text="Скрывать время симуляции" toggleGroup="$tgTimer" />
+            <MenuBar prefHeight="25.0" prefWidth="1100.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="Главное">
+                  <items>
+                      <MenuItem fx:id="startMenuItem" disable="false" mnemonicParsing="false" text="Начать генерацию" />
+                      <MenuItem fx:id="stopMenuItem" disable="true" mnemonicParsing="false" text="Остановить генерацию" />
+                      <MenuItem fx:id="exitMenuItem" disable="false" mnemonicParsing="false" text="Закрыть программу" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Панель инструментов">
+                  <items>
+                        <MenuItem fx:id="showTimeMenuItem" disable="true" mnemonicParsing="false" text="Показывать время симуляции" />
+                        <MenuItem fx:id="hideTimeMenuItem" disable="false" mnemonicParsing="false" text="Скрывать время симуляции" />
+                        <MenuItem fx:id="showInformationMenuItem" disable="false" mnemonicParsing="false" text="Показывать информацию" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Инфо">
+                    <items>
+                      <MenuItem fx:id="liveObjMenuItem" disable="true" mnemonicParsing="false" text="Текущие объекты" />
+                        <MenuItem fx:id="authorsMenuItem" mnemonicParsing="false" text="Авторы" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <Pane layoutX="391.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="290.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТА">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="applyMaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="maleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="maleSpawnProbability" disable="false" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="0 %" />
+                              <String fx:value="10 %" />
+                              <String fx:value="20 %" />
+                              <String fx:value="30 %" />
+                              <String fx:value="40 %" />
+                              <String fx:value="50 %" />
+                              <String fx:value="60 %" />
+                              <String fx:value="70 %" />
+                              <String fx:value="80 %" />
+                              <String fx:value="90 %" />
+                              <String fx:value="100 %" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+                  <TextField fx:id="maleLifeTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="64.0" prefHeight="25.0" prefWidth="70.0" promptText="LifeTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="maleAIButton" layoutX="99.0" layoutY="64.0" mnemonicParsing="false" text="ИИ Студент" />
+               </children>
+            </Pane>
+            <Pane layoutX="391.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="290.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="Характеристики СТУДЕНТКИ">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="applyFemaleProp" disable="false" layoutX="195.0" layoutY="29.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Применить" />
+                  <TextField fx:id="femaleSpawnTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="29.0" prefHeight="25.0" prefWidth="70.0" promptText="SpawnTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="femaleSpawnProbability" disable="false" layoutX="99.0" layoutY="29.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="81.0" promptText="Probability">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="0 %" />
+                              <String fx:value="10 %" />
+                              <String fx:value="20 %" />
+                              <String fx:value="30 %" />
+                              <String fx:value="40 %" />
+                              <String fx:value="50 %" />
+                              <String fx:value="60 %" />
+                              <String fx:value="70 %" />
+                              <String fx:value="80 %" />
+                              <String fx:value="90 %" />
+                              <String fx:value="100 %" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+                  <TextField fx:id="femaleLifeTimeTextField" alignment="CENTER" disable="false" layoutX="20.0" layoutY="64.0" prefHeight="25.0" prefWidth="70.0" promptText="LifeTime">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="femaleAIButton" layoutX="99.0" layoutY="64.0" mnemonicParsing="false" text="ИИ Студентка" />
+               </children>
+            </Pane>
+            <CheckBox fx:id="informationCheckBox" layoutX="85.0" layoutY="54.0" mnemonicParsing="false" selected="true" text="Показывать информацию">
+               <font>
+                  <Font size="14.0" />
+               </font></CheckBox>
+            <Button fx:id="liveObjButton" disable="true" layoutX="722.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Текущие объекты" />
+            <ComboBox fx:id="priorityFemaleComboBox" layoutX="700.0" layoutY="164.0" prefHeight="25.0" prefWidth="170.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="0" />
+                     <String fx:value="1" />
+                     <String fx:value="2" />
+                     <String fx:value="3" />
+                     <String fx:value="4" />
+                     <String fx:value="5" />
+                     <String fx:value="6" />
+                     <String fx:value="7" />
+                     <String fx:value="8" />
+                     <String fx:value="9" />
+                     <String fx:value="10" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <Label layoutX="700.0" layoutY="96.0" text="Приоритет потока студента">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="700.0" layoutY="147.0" text="Приоритет потока студентки">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="priorityMaleComboBox" layoutX="700.0" layoutY="111.0" prefHeight="25.0" prefWidth="170.0">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="0" />
+                     <String fx:value="1" />
+                     <String fx:value="2" />
+                     <String fx:value="3" />
+                     <String fx:value="4" />
+                     <String fx:value="5" />
+                     <String fx:value="6" />
+                     <String fx:value="7" />
+                     <String fx:value="8" />
+                     <String fx:value="9" />
+                     <String fx:value="10" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <Button fx:id="saveObjectsButton" layoutX="2.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Сохранить в файл" />
+            <Button fx:id="loadObjectsButton" layoutX="2.0" layoutY="185.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Загрузить из файла" />
+            <Button fx:id="consoleButton" layoutX="795.0" layoutY="197.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="75.0" text="Консоль" />
+            <ListView fx:id="connectedClientsList" layoutX="884.0" layoutY="31.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="saveObjectsDBButton" layoutX="275.0" layoutY="152.0" mnemonicParsing="false" text="Сохранить в БД" />
+            <Button fx:id="loadObjectsDBButton" layoutX="275.0" layoutY="185.0" mnemonicParsing="false" text="Загрузить из БД" />
+            <ChoiceBox fx:id="typeObjectsDBChoiseBox" layoutX="142.0" layoutY="185.0" prefHeight="25.0" prefWidth="118.0">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="All objects" />
+                        <String fx:value="MaleStudent" />
+                        <String fx:value="FemaleStudent" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+            <Label layoutX="142.0" layoutY="156.0" prefHeight="17.0" prefWidth="125.0" text="Тип объекта для БД:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+
+         </children>
+      </Pane>
+      <Pane fx:id="visualizationPane" snapToPixel="false" style="-fx-background-color: #e1c6c6;">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@backdround_AVTF.jpg" />
+               </image></ImageView>
+            <Label fx:id="labelTextTIMER" layoutX="14.0" layoutY="14.0" text="Timer:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="labelTimer" layoutX="54.0" layoutY="14.0" />
+         </children>
+      </Pane>
+   </items>
+</SplitPane>

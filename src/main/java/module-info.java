@@ -1,6 +1,7 @@
 module ru.nstu.javafx_labs_lipatov_v2 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     exports ru.nstu.javafx_labs_lipatov_v2;

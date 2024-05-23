@@ -82,7 +82,14 @@ public class HabitatView {
     @FXML
     private Button loadObjectsButton;
     @FXML
+    private Button saveObjectsDBButton;
+    @FXML
+    private Button loadObjectsDBButton;
+    @FXML
     private ListView<String> connectedClientsList;
+    @FXML
+    private ChoiceBox typeObjectsDBChoiseBox;
+
 
     public void setComboBoxMap() {
         int procent = 0;
@@ -241,5 +248,17 @@ public class HabitatView {
 
     public ListView<String> getConnectedClientsList() {
         return connectedClientsList;
+    }
+
+    public Button getSaveObjectsDBButton() {
+        return saveObjectsDBButton;
+    }
+
+    public Button getLoadObjectsDBButton() {
+        return loadObjectsDBButton;
+    }
+
+    public ChoiceBox getTypeObjectsDBChoiseBox() {
+        return typeObjectsDBChoiseBox;
     }
 }
