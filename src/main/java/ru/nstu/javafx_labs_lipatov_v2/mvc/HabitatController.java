@@ -459,6 +459,7 @@ public class HabitatController {
         });
 
         view.getLoadObjectsDBButton().setOnAction(event -> {
+
             if (model.isStartFlag()) {
                 model.setInformationWindowFlag(false);
                 stopFunk();
@@ -467,18 +468,17 @@ public class HabitatController {
 
             model.clearScreen();
             StudentCollections.getInstance().reset();
-            LinkedList<Student> studList = StudentCollections.getInstance().linkedStudentList;
 
             String type = (String)view.getTypeObjectsDBChoiseBox().getSelectionModel().getSelectedItem();
             switch (type){
                 case "All objects":
-
+                    StudentDB.getStudent(view, 0);
                     break;
                 case "MaleStudent":
-
+                    StudentDB.getStudent(view, 1);
                     break;
                 case "FemaleStudent":
-
+                    StudentDB.getStudent(view, 2);
                     break;
                 default:
                     return;
